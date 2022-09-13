@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
-import Header from "./components/Layout/Header";
+import Layout from "./components/Layout/Layout";
+import Board from "./components/Game/Board";
 
 function App() {
   const [connection, setConnection] = useState();
   const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    joinRoom("testuser", "testroom");
+    setupConnection("testuser", "testroom");
   }, []);
 
-  const joinRoom = async (user, room) => {
+  const setupConnection = async (user, room) => {
     try {
       const connection = new HubConnectionBuilder()
         .withUrl("https://localhost:7001/chat")
@@ -23,7 +25,10 @@ function App() {
         console.log(message);
       });
 
-      await connection.start().then(() => console.log('Connection started')).catch(e => console.log('error:' + e));
+      await connection
+        .start()
+        .then(() => console.log("Connection started"))
+        .catch((e) => setErrorMessage(`${e}`));
       await connection.invoke("JoinRoom", { user, room });
       console.log("connection start");
       setConnection(connection);
@@ -32,7 +37,7 @@ function App() {
     }
   };
 
-  const buttonClickHandler = async (event) => {
+  const sendMessageHandler = async (event) => {
     try {
       await connection.invoke("SendMessage", "test", "yes");
     } catch (e) {
@@ -41,12 +46,12 @@ function App() {
   };
 
   return (
-    <div>
-      <Header />
-      <h1>HELLO WORLD</h1>
-      <button onClick={buttonClickHandler}>Send message</button>
-      <p>{message}</p>
-    </div>
+    <Layout>
+      <div>
+        {errorMessage && <h1>{errorMessage}</h1>}
+        <Board />
+      </div>
+    </Layout>
   );
 }
 

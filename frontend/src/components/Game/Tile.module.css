@@ -1,0 +1,9 @@
+.tile {
+    width: 2rem;
+    height: 2rem;
+    max-width: 2rem;
+    max-height: 2rem;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin: 1px;
+}

@@ -1,15 +1,17 @@
-import React from 'react';
-import classes from './Header.module.css';
+import React from "react";
+import classes from "./Header.module.css";
+
+import logo from "../../assets/logo.png";
 
 const Header = (props) => {
   return (
     <React.Fragment>
       <header className={classes.header}>
-        <h1>Chess 2</h1>
+        <div className={classes.logo}>
+          <img src={logo} alt="Logo" />
+          <h1>Chess 2</h1>
+        </div>
       </header>
-      <div className={classes["main-image"]}>
-        
-      </div>
     </React.Fragment>
   );
 };
