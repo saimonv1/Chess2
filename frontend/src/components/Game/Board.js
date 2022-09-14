@@ -17,7 +17,7 @@ const Board = (props) => {
 
     return (
         <div>
-            <h1>{props.userName}</h1>
+            <h1>Slapyvardis: {props.userName}</h1>
             <div className={classes.grid}>
                 {grid.map((row, rowId) => {
                     return (
