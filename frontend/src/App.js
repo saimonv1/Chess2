@@ -44,7 +44,6 @@ function App() {
           setConnectionErrorMessage(`${e}`);
           setIsLoading(false);
         });
-      await connection.invoke("Connect");
       setConnection(connection);
     } catch (e) {
       console.log(e);

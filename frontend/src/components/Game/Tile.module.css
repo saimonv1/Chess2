@@ -1,4 +1,5 @@
 .tile {
+    display: inline-block;
     width: 2rem;
     height: 2rem;
     max-width: 2rem;
@@ -6,4 +7,11 @@
     border: 1px solid black;
     border-radius: 4px;
     margin: 1px;
+}
+.tile.pressed {
+    background-color: blueviolet;
+}
+
+.tile.obstacle {
+    background-color: black;
 }

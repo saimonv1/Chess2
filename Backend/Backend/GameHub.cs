@@ -6,17 +6,27 @@ namespace Backend
     {
         private static Dictionary<string, string> userNames = new Dictionary<string, string>();
 
-        public async Task Connect()
+        public override async Task OnConnectedAsync()
         {
             Console.WriteLine($"A user connected. (ConnectionID: {Context.ConnectionId})");
+            await base.OnConnectedAsync();
         }
 
-        public async Task OnDisconnected()
+        public async override Task OnDisconnectedAsync(Exception ex)
         {
-            var userName = userNames[Context.ConnectionId];
-            userNames.Remove(Context.ConnectionId);
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "game");
-            Console.WriteLine($"A user ({userName}) disconnected. (ConnectionID: {Context.ConnectionId}");
+            var connectionId = Context.ConnectionId;
+            if (userNames.ContainsKey(connectionId))
+            {
+                var userName = userNames[connectionId];
+                userNames.Remove(connectionId);
+                await Groups.RemoveFromGroupAsync(connectionId, "game");
+                Console.WriteLine($"A user ({userName}) disconnected. (ConnectionID: {connectionId}");
+            }
+            else
+            {
+                Console.WriteLine($"A user disconnected. (ConnectionID: {connectionId}");
+            }
+            await base.OnDisconnectedAsync(ex);
         }
 
         public async Task EnterUserName(string name)
