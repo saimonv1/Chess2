@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Stuff\\KTU\\7 semestras\\opp\\PROJEKTAZ\\Backend\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Stuff\\KTU\\7 semestras\\opp\\Chess2\\Chess2\\Backend\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Stuff\\KTU\\7 semestras\\opp\\PROJEKTAZ\\Backend\\Backend\\Backend.csproj",
+      "projectPath": "C:\\Stuff\\KTU\\7 semestras\\opp\\Chess2\\Chess2\\Backend\\Backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\svere\\.nuget\\packages\\",
-      "outputPath": "C:\\Stuff\\KTU\\7 semestras\\opp\\PROJEKTAZ\\Backend\\Backend\\obj\\",
+      "outputPath": "C:\\Stuff\\KTU\\7 semestras\\opp\\Chess2\\Chess2\\Backend\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\svere\\AppData\\Roaming\\NuGet\\NuGet.Config",

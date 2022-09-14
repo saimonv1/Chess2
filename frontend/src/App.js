@@ -3,43 +3,49 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 import Layout from "./components/Layout/Layout";
 import Board from "./components/Game/Board";
+import User from "./components/Game/User";
 
 function App() {
   const [connection, setConnection] = useState();
-  const [message, setMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
+  const [userName, setUserName] = useState("");
+
+  const [userNameInputError, setUserNameInputError] = useState("");
 
   useEffect(() => {
-    setupConnection("testuser", "testroom");
+    setupConnection();
   }, []);
 
-  const setupConnection = async (user, room) => {
+  const setupConnection = async () => {
     try {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7001/chat")
+        .withUrl("https://localhost:7001/game")
         .configureLogging(LogLevel.Information)
         .build();
 
-      connection.on("ReceiveMessage", (user, message) => {
-        setMessage(message);
-        console.log(message);
+      connection.on("ConfirmUsername", (user, message) => {
+        console.log({ user, message });
+        if (message) {
+          setUserNameInputError(message);
+        } else {
+          setUserName(user);
+        }
       });
 
       await connection
         .start()
-        .then(() => console.log("Connection started"))
-        .catch((e) => setErrorMessage(`${e}`));
-      await connection.invoke("JoinRoom", { user, room });
-      console.log("connection start");
+        .then(() => {
+          console.log("Connection started");
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          setConnectionErrorMessage(`${e}`);
+          setIsLoading(false);
+        });
+      await connection.invoke("Connect");
       setConnection(connection);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const sendMessageHandler = async (event) => {
-    try {
-      await connection.invoke("SendMessage", "test", "yes");
     } catch (e) {
       console.log(e);
     }
@@ -48,8 +54,19 @@ function App() {
   return (
     <Layout>
       <div>
-        {errorMessage && <h1>{errorMessage}</h1>}
-        <Board />
+        {isLoading ? (
+          <h1>Loading...</h1>
+        ) : connectionErrorMessage ? (
+          <h1 style={{ color: "red" }}>{connectionErrorMessage}</h1>
+        ) : userName ? (
+          <Board userName={userName} />
+        ) : (
+          <User
+            error={userNameInputError}
+            setError={setUserNameInputError}
+            connection={connection}
+          />
+        )}
       </div>
     </Layout>
   );
