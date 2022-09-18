@@ -40,3 +40,24 @@ C:\Stuff\KTU\7 semestras\opp\Chess2\Chess2\Backend\Backend\obj\Debug\net6.0\refi
 C:\Stuff\KTU\7 semestras\opp\Chess2\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.pdb
 C:\Stuff\KTU\7 semestras\opp\Chess2\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.genruntimeconfig.cache
 C:\Stuff\KTU\7 semestras\opp\Chess2\Chess2\Backend\Backend\obj\Debug\net6.0\ref\Backend.dll
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\appsettings.json
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\Backend.exe
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\Backend.deps.json
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\Backend.runtimeconfig.json
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\Backend.dll
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\bin\Debug\net6.0\Backend.pdb
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.csproj.AssemblyReference.cache
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.AssemblyInfoInputs.cache
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.AssemblyInfo.cs
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.csproj.CoreCompileInputs.cache
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\scopedcss\bundle\Backend.styles.css
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.dll
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\refint\Backend.dll
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.pdb
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\Backend.genruntimeconfig.cache
+C:\Users\Ginta\Desktop\University\T120B516 Objektinis programų projektavimas\Projektas\Chess2\Backend\Backend\obj\Debug\net6.0\ref\Backend.dll

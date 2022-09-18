@@ -1,0 +1,17 @@
+OPP:
+Grid based žaidimas. Žaidėjas turi kelių tipų veikėjus, kurie turi savo skirtingus ėjimus ir funkcijas.
+Kiekvieną ėjimą žaidėjas valdo vieną veikėją, pasibaigus ėjimui valdymą gauna kitas žaidėjas.
+Žaidėjų kiekis:
+2-4 žaidėjai (Pagal žaidėjų kiekį mapas keičiasi) 
+Žaidimo tikslas:
+Sunaikinti priešininkų veikėjus ir likti gyvam. Žaidimo metu žemėlapyje yra kelių tipų objektai kaip: 
+Kliūtys(Pro jas negalima bus šaudyti/pravažiuoti), Pickup(Gyvybių, jei bus FogOfWar gali būti UAV, Ėjimų padidinimą, Noclipai)
+Veikėjų tipai:
+Vidutinis tankas(Daugiau gali ėjimų, tačiau silpnesnės atakos, mažiau gyvybių)
+Sunkiasvoris tankas(Mažiau ėjimų, stipresnės atakos, daugiau gyvybių)
+Helicopter(Mažai ėjimų, tačiau gali skristi per obstactles, taip pat šauti per obstacles, mažai gyvybių)
+Maps:
+Arba auto generated
+Arba manually created
+
+Naudojame C# programavimo kalbą backendui, React frontendui ir SignalR, kad komunikuoti tarp jų

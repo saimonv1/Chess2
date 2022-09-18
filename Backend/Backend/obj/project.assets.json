@@ -8,28 +8,25 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\svere\\.nuget\\packages\\": {}
+    "C:\\Users\\Ginta\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Stuff\\KTU\\7 semestras\\opp\\Chess2\\Chess2\\Backend\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\Ginta\\Desktop\\University\\T120B516 Objektinis programų projektavimas\\Projektas\\Chess2\\Backend\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Stuff\\KTU\\7 semestras\\opp\\Chess2\\Chess2\\Backend\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\svere\\.nuget\\packages\\",
-      "outputPath": "C:\\Stuff\\KTU\\7 semestras\\opp\\Chess2\\Chess2\\Backend\\Backend\\obj\\",
+      "projectPath": "C:\\Users\\Ginta\\Desktop\\University\\T120B516 Objektinis programų projektavimas\\Projektas\\Chess2\\Backend\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\Ginta\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ginta\\Desktop\\University\\T120B516 Objektinis programų projektavimas\\Projektas\\Chess2\\Backend\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\svere\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Ginta\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://nuget.emzi0767.com/api/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
@@ -52,7 +49,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -64,7 +62,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\Ginta\\.dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
