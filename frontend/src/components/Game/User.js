@@ -8,10 +8,10 @@ const User = (props) => {
         //props.onSubmit(userNameRef.current.value);
         try {
             await props.connection.invoke("EnterUserName", userNameRef.current.value);
-          } catch (e) {
+        } catch (e) {
             console.log(e);
             props.setError(`${e}`);
-          }
+        }
     };
 
     return (
@@ -19,7 +19,7 @@ const User = (props) => {
             <h1>Enter User Name:</h1>
             <input ref={userNameRef} type='text' name='name' />
             <input type="submit" value="Submit" />
-            {props.error && <p style={{color: 'red'}}>{props.error}</p>}
+            {props.error && <p style={{ color: 'red' }}>{props.error}</p>}
         </form>
     );
 };

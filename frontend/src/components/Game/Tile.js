@@ -1,4 +1,4 @@
-import { useState } from 'react'; 
+import { useState } from 'react';
 
 import classes from './Tile.module.css';
 
@@ -7,6 +7,7 @@ const Tile = (props) => {
 
     const onClickHandler = () => {
         setIsPressed(prevState => !prevState);
+
         console.log('X: ' + props.row + ' Y: ' + props.node);
     };
 
