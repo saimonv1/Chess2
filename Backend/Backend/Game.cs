@@ -1,4 +1,6 @@
-﻿namespace Backend;
+﻿using System.Collections.Generic;
+
+namespace Backend;
 
 public class Game
 {

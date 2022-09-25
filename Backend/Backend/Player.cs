@@ -1,4 +1,7 @@
-﻿namespace Backend;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Backend;
 
 public class Player
 {
@@ -6,7 +9,7 @@ public class Player
     public string Name { get; set; }
     public Color Color { get; set; }
     public List<Unit> Units { get; set; }
-
+    
     public Player(Guid id, string name, Color color, List<Unit> units)
     {
         Id = id;
