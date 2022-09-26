@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 import Layout from "./components/Layout/Layout";
 import Board from "./components/Game/Board";
 import User from "./components/Game/User";
+import Lobby from "./components/Game/Lobby";
+import GameProvider from "./store/GameProvider";
+import GameContext from "./store/game-context";
 
 function App() {
   const [connection, setConnection] = useState();
@@ -14,6 +17,8 @@ function App() {
   const [color, setColor] = useState("");
 
   const [userNameInputError, setUserNameInputError] = useState("");
+
+  const gameCtx = useContext(GameContext);
 
   useEffect(() => {
     setupConnection();
@@ -53,23 +58,26 @@ function App() {
   };
 
   return (
-    <Layout>
-      <div>
-        {isLoading ? (
-          <h1>Loading...</h1>
-        ) : connectionErrorMessage ? (
-          <h1 style={{ color: "red" }}>{connectionErrorMessage}</h1>
-        ) : userName ? (
-          <Board userName={userName} />
-        ) : (
-          <User
-            error={userNameInputError}
-            setError={setUserNameInputError}
-            connection={connection}
-          />
-        )}
-      </div>
-    </Layout>
+    <GameProvider>
+      <Layout>
+        <div>
+          {isLoading ? (
+            <h1>Loading...</h1>
+          ) : connectionErrorMessage ? (
+            <h1 style={{ color: "red" }}>{connectionErrorMessage}</h1>
+          ) : userName ? (
+            <Board userName={userName} />
+          ) : gameCtx.gameStatus ? (
+            <User
+              error={userNameInputError}
+              setError={setUserNameInputError}
+              connection={connection}
+            />
+          ) : <Lobby />  
+          }
+        </div>
+      </Layout>
+    </GameProvider>
   );
 }
 
