@@ -5,14 +5,14 @@ namespace Backend;
 
 public class Player
 {
-    public Guid Id { get; set; }
+    public string ConnectionID { get; set; }
     public string Name { get; set; }
     public Color Color { get; set; }
     public List<Unit> Units { get; set; }
     
-    public Player(Guid id, string name, Color color, List<Unit> units)
+    public Player(string id, string name, Color color, List<Unit> units)
     {
-        Id = id;
+        ConnectionID = id;
         Name = name;
         Color = color;
         Units = units;

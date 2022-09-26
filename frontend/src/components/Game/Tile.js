@@ -4,7 +4,7 @@ import classes from './Tile.module.css';
 
 const Tile = (props) => {
     const [isPressed, setIsPressed] = useState(false);
-
+    
     const onClickHandler = () => {
         setIsPressed(prevState => !prevState);
 
@@ -12,7 +12,7 @@ const Tile = (props) => {
     };
 
     return (
-        <div onClick={onClickHandler} className={`${classes.tile} ${isPressed ? classes.pressed : ''} ${props.obstacle ? classes.obstacle : ''}`}></div>
+        <div onClick={onClickHandler} className={`${classes.tile} ${isPressed ? classes.red : ''} ${props.obstacle ? classes.obstacle : ''} `}></div>
     );
 };
 

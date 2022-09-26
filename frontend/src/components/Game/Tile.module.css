@@ -8,9 +8,23 @@
     border-radius: 4px;
     margin: 1px;
 }
-.tile.pressed {
-    background-color: blueviolet;
+
+.tile.red {
+    background-color: red;
 }
+
+.tile.green {
+    background-color: green;
+}
+
+.tile.blue {
+    background-color: blue;
+}
+
+.tile.yellow {
+    background-color: yellow;
+}
+
 
 .tile.obstacle {
     background-color: black;

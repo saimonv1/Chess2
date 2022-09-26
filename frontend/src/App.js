@@ -11,6 +11,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
   const [userName, setUserName] = useState("");
+  const [color, setColor] = useState("");
 
   const [userNameInputError, setUserNameInputError] = useState("");
 
@@ -30,7 +31,8 @@ function App() {
         if (message) {
           setUserNameInputError(message);
         } else {
-          setUserName(user);
+          setUserName(user.name);
+          setColor(user.color);
         }
       });
 

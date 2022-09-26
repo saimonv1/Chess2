@@ -46,8 +46,13 @@ namespace Backend
                 return;
             }
             userNames.Add(Context.ConnectionId, name);
+
+            var player = new Player(Context.ConnectionId, name, Color.Blue, null);
+
+            Game.ConnectedPlayers.Add(player);
             await Groups.AddToGroupAsync(Context.ConnectionId, "game");
-            await Clients.Caller.SendAsync("ConfirmUserName", name, "");
+            await Clients.Caller.SendAsync("ConfirmUserName", player);
+            // await Clients.Caller.SendAsync("Color", );
         }
     }
 }
