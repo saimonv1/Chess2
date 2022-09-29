@@ -1,58 +1,64 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+#region
+
+using System.Runtime.Loader;
+using Backend.Enums;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Backend
+#endregion
+
+namespace Backend;
+
+public class GameHub : Hub
 {
-    public class GameHub : Hub
+    private readonly Game _game = Game.GetGameInstance();
+    private const string GameGroup = "GAME";
+    public override async Task OnConnectedAsync()
     {
-        private static Dictionary<string, string> userNames = new Dictionary<string, string>();
+        Console.WriteLine($"A user connected. (ConnectionID: {Context.ConnectionId})");
+        await base.OnConnectedAsync();
+    }
 
-        public override async Task OnConnectedAsync()
+    public override async Task OnDisconnectedAsync(Exception ex)
+    {
+        var connectionId = Context.ConnectionId;
+        var player = _game.GetPlayerByConnectionId(connectionId);
+        if (player is not null)
         {
-            Console.WriteLine($"A user connected. (ConnectionID: {Context.ConnectionId})");
-            await base.OnConnectedAsync();
+            _game.RemovePlayer(player);
+            await Groups.RemoveFromGroupAsync(connectionId, GameGroup);
+            await Clients.Group(GameGroup).SendAsync("PlayerLeave", player);
         }
 
-        public async override Task OnDisconnectedAsync(Exception ex)
-        {
-            var connectionId = Context.ConnectionId;
-            if (userNames.ContainsKey(connectionId))
-            {
-                var userName = userNames[connectionId];
-                userNames.Remove(connectionId);
-                await Groups.RemoveFromGroupAsync(connectionId, "game");
-                Console.WriteLine($"A user ({userName}) disconnected. (ConnectionID: {connectionId}");
-            }
-            else
-            {
-                Console.WriteLine($"A user disconnected. (ConnectionID: {connectionId}");
-            }
-            await base.OnDisconnectedAsync(ex);
-        }
+        Console.WriteLine($"A user ({player?.Name}) disconnected. (ConnectionID: {connectionId}");
+        await base.OnDisconnectedAsync(ex);
+    }
 
-        public async Task EnterUserName(string name)
+    public async Task EnterUserName(string name)
+    {
+        Console.WriteLine("Entered name: " + name);
+        var player = new Player(Context.ConnectionId, name, Color.Blue, null);
+        switch (_game.AddPlayer(player))
         {
-            Console.WriteLine("Entered name: " + name);
-            if (userNames.ContainsValue(name))
-            {
-                await Clients.Caller.SendAsync("ConfirmUserName", name, "This username is unvalaibale. Please choose another one!");
-                return;
-            }
-            if(userNames.Count >= 4)
-            {
+            case AddPlayerState.PlayerWithNameExists:
+                await Clients.Caller.SendAsync("ConfirmUserName", name,
+                    "This username is unavailable. Please choose another one!");
+                break;
+            case AddPlayerState.ServerIsFull:
                 await Clients.Caller.SendAsync("ConfirmUserName", name, "Cannot join the game. The game is full.");
-                return;
-            }
-            userNames.Add(Context.ConnectionId, name);
-
-            var player = new Player(Context.ConnectionId, name, Color.Blue, null);
-
-            Game.ConnectedPlayers.Add(player);
-            await Groups.AddToGroupAsync(Context.ConnectionId, "game");
-            await Clients.Caller.SendAsync("ConfirmUserName", player);
-            // await Clients.Caller.SendAsync("Color", );
+                break;
+            case AddPlayerState.Completed:
+            default:
+                await Clients.Group(GameGroup).SendAsync("PlayerJoin", player);
+                await Groups.AddToGroupAsync(Context.ConnectionId, GameGroup);
+                await Clients.Caller.SendAsync("ConfirmUserName", _game.GetPlayers());
+                break;
         }
+    }
+
+    public async Task ReadyUp()
+    {
+        var connectionId = Context.ConnectionId;
+        var ready = _game.ChangeReadyStatus(connectionId);
+        await Clients.Group(GameGroup).SendAsync("ReadyStatus", connectionId, ready);
     }
 }

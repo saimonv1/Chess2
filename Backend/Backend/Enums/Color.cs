@@ -1,4 +1,4 @@
-﻿namespace Backend;
+﻿namespace Backend.Enums;
 
 public enum Color
 {
