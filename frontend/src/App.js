@@ -41,6 +41,14 @@ function App() {
         }
       });
 
+      connection.on("PlayerJoin", (player) => {
+        gameCtx.addPlayer(player);
+      })
+
+      connection.on("PlayerLeave", (player) => {
+        gameCtx.removePlayer(player);
+      })
+
       await connection
         .start()
         .then(() => {
@@ -65,15 +73,15 @@ function App() {
             <h1>Loading...</h1>
           ) : connectionErrorMessage ? (
             <h1 style={{ color: "red" }}>{connectionErrorMessage}</h1>
-          ) : userName ? (
-            <Board userName={userName} />
-          ) : gameCtx.gameStatus ? (
+          ) : !userName ? (
             <User
               error={userNameInputError}
               setError={setUserNameInputError}
               connection={connection}
             />
-          ) : <Lobby />  
+          ) : gameCtx.gameStatus ? (
+            <Board userName={userName} />
+          ) : <Lobby />
           }
         </div>
       </Layout>
