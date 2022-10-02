@@ -1,6 +1,5 @@
 #region
 
-using System.Runtime.Loader;
 using Backend.Enums;
 using Microsoft.AspNetCore.SignalR;
 
@@ -12,6 +11,7 @@ public class GameHub : Hub
 {
     private readonly Game _game = Game.GetGameInstance();
     private const string GameGroup = "GAME";
+
     public override async Task OnConnectedAsync()
     {
         Console.WriteLine($"A user connected. (ConnectionID: {Context.ConnectionId})");
@@ -36,7 +36,8 @@ public class GameHub : Hub
     public async Task EnterUserName(string name)
     {
         Console.WriteLine("Entered name: " + name);
-        var player = new Player(Context.ConnectionId, name, Color.Blue, null);
+        var color = _game.GetFirstAvailableFreeColor();
+        var player = new Player(Context.ConnectionId, name, color, null);
         switch (_game.AddPlayer(player))
         {
             case AddPlayerState.PlayerWithNameExists:

@@ -50,11 +50,21 @@ public class Game
     public bool ChangeReadyStatus(string connectionId)
     {
         var player = ConnectedPlayers.FirstOrDefault(p => p.ConnectionID == connectionId);
-        if (player is not null)
-        {
-            player.IsReady = !player.IsReady;
-        }
+        if (player is not null) player.IsReady = !player.IsReady;
 
         return player?.IsReady ?? false;
+    }
+
+    public Color GetFirstAvailableFreeColor()
+    {
+        foreach (var color in Enum.GetValues<Color>())
+        {
+            if (ConnectedPlayers.All(p => p.Color != color))
+            {
+                return color;
+            }
+        }
+
+        return Color.Yellow;
     }
 }
