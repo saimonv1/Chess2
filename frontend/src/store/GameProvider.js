@@ -5,7 +5,7 @@ import GameContext from "./game-context";
 const defaultGameState = {
   players: [],
   name: "",
-  color: "",
+  color: -1,
   isReady: false,
   gameStatus: false,
 };
@@ -18,7 +18,7 @@ const gameReducer = (state, action) => {
 
   if (action.type === "REMOVE_PLAYER") {
     const updatedPlayers = state.players.filter(
-      (item) => item.connectionId !== action.item.connectionId
+      (player) => player.connectionID !== action.item.connectionID
     );
     return { ...state, players: updatedPlayers };
   }
