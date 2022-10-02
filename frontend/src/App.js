@@ -5,7 +5,6 @@ import Layout from "./components/Layout/Layout";
 import Board from "./components/Game/Board";
 import User from "./components/Game/User";
 import Lobby from "./components/Game/Lobby";
-import GameProvider from "./store/GameProvider";
 import GameContext from "./store/game-context";
 
 function App() {
@@ -13,15 +12,16 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
-  const [userName, setUserName] = useState("");
-  const [color, setColor] = useState("");
 
   const [userNameInputError, setUserNameInputError] = useState("");
 
   const gameCtx = useContext(GameContext);
 
+  const userName = gameCtx.name;
+
   useEffect(() => {
     setupConnection();
+    // eslint-disable-next-line
   }, []);
 
   const setupConnection = async () => {
@@ -31,23 +31,29 @@ function App() {
         .configureLogging(LogLevel.Information)
         .build();
 
-      connection.on("ConfirmUsername", (user, message) => {
-        console.log({ user, message });
+      connection.on("ConfirmUsername", (users, message, user) => {
         if (message) {
           setUserNameInputError(message);
         } else {
-          setUserName(user.name);
-          setColor(user.color);
+          gameCtx.changeName(user.name);
+          gameCtx.changeColor(user.color);
+          users.forEach((user) => {
+            gameCtx.addPlayer(user);
+          });
         }
       });
 
       connection.on("PlayerJoin", (player) => {
         gameCtx.addPlayer(player);
-      })
+      });
 
       connection.on("PlayerLeave", (player) => {
         gameCtx.removePlayer(player);
-      })
+      });
+
+      connection.on("ReadyStatus", (connectionId, status) => {
+        gameCtx.changeReadyStatus(connectionId, status);
+      });
 
       await connection
         .start()
@@ -66,26 +72,25 @@ function App() {
   };
 
   return (
-    <GameProvider>
-      <Layout>
-        <div>
-          {isLoading ? (
-            <h1>Loading...</h1>
-          ) : connectionErrorMessage ? (
-            <h1 style={{ color: "red" }}>{connectionErrorMessage}</h1>
-          ) : !userName ? (
-            <User
-              error={userNameInputError}
-              setError={setUserNameInputError}
-              connection={connection}
-            />
-          ) : gameCtx.gameStatus ? (
-            <Board userName={userName} />
-          ) : <Lobby />
-          }
-        </div>
-      </Layout>
-    </GameProvider>
+    <Layout>
+      <div>
+        {isLoading ? (
+          <h1>Loading...</h1>
+        ) : connectionErrorMessage ? (
+          <h1 style={{ color: "red" }}>{connectionErrorMessage}</h1>
+        ) : !userName ? (
+          <User
+            error={userNameInputError}
+            setError={setUserNameInputError}
+            connection={connection}
+          />
+        ) : gameCtx.gameStatus ? (
+          <Board userName={userName} />
+        ) : (
+          <Lobby connection={connection} />
+        )}
+      </div>
+    </Layout>
   );
 }
 

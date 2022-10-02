@@ -50,7 +50,7 @@ public class GameHub : Hub
             default:
                 await Clients.Group(GameGroup).SendAsync("PlayerJoin", player);
                 await Groups.AddToGroupAsync(Context.ConnectionId, GameGroup);
-                await Clients.Caller.SendAsync("ConfirmUserName", _game.GetPlayers());
+                await Clients.Caller.SendAsync("ConfirmUserName", _game.GetPlayers(), "", player);
                 break;
         }
     }
