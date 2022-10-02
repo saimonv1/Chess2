@@ -1,11 +1,13 @@
 #region
 
+using Backend.Entities;
 using Backend.Enums;
+using Backend.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
 #endregion
 
-namespace Backend;
+namespace Backend.GameHubs;
 
 public class GameHub : Hub
 {

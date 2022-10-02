@@ -4,7 +4,7 @@ using Backend.Enums;
 
 #endregion
 
-namespace Backend;
+namespace Backend.Entities;
 
 public class Player
 {

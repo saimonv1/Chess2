@@ -1,10 +1,11 @@
 ﻿#region
 
+using Backend.Entities;
 using Backend.Enums;
 
 #endregion
 
-namespace Backend;
+namespace Backend.Utilities;
 
 public class Game
 {

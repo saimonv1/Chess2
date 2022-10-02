@@ -1,4 +1,4 @@
-﻿namespace Backend;
+﻿namespace Backend.Entities;
 
 public class Map
 {
