@@ -1,6 +1,8 @@
-using Backend;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+#region
+
+using Backend.GameHubs;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
