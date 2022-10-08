@@ -40,6 +40,7 @@ function App() {
           users.forEach((user) => {
             gameCtx.addPlayer(user);
           });
+          console.log(gameCtx.color);
         }
       });
 
@@ -53,6 +54,10 @@ function App() {
 
       connection.on("ReadyStatus", (connectionId, status) => {
         gameCtx.changeReadyStatus(connectionId, status);
+      });
+
+      connection.on("GameStatus", (status) => {
+        gameCtx.gameStatus(status);
       });
 
       await connection
