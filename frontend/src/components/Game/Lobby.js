@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import GameContext from "../../store/game-context";
 
+import classes from "./Lobby.module.css";
+
 const Lobby = (props) => {
   const gameCtx = useContext(GameContext);
 
@@ -17,17 +19,23 @@ const Lobby = (props) => {
   return (
     <React.Fragment>
       <h1>Lobby</h1>
-      <ul>
-        {gameCtx.players.map((player) => {
+      {gameCtx.players.map((player) => {
+          let colorClass = classes.red;
+          if (player.color === 0) {
+            colorClass = classes.red;
+          } else if (player.color === 1) {
+            colorClass = classes.blue;
+          } else if (player.color === 2) {
+            colorClass = classes.green;
+          } else if (player.color === 3) {
+            colorClass = classes.yellow;
+          }
           return (
-            <li key={player.connectionId}>
-              <h3>{player.name}</h3>
-              <p>{player.color}</p>
-              <p>{player.isReady ? "Ready" : "Not ready"}</p>
-            </li>
+            <div key={player.connectionID} className={colorClass}>
+              {player.isReady ? '✔' : 'X'} <b>{player.name}</b>
+            </div>
           );
-        })}
-      </ul>
+      })}
       <button onClick={onClickHandler}>
         {gameCtx.isReady ? "UnReady" : "Ready"}
       </button>

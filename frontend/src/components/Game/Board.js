@@ -58,9 +58,9 @@ const Board = (props) => {
         <div className={classes.grid}>
           {gameCtx.map.map((row, rowId) => {
             return (
-              <div key={rowId} className={classes.row}>
+              <div key={`Row: ${rowId}`} className={classes.row}>
                 {row.map((node, nodeId) => {
-                  return <Tile key={nodeId} row={rowId} node={nodeId} obstacle={node.isObstacle} unit={node.unit}/>;
+                  return <Tile key={`Node: ${rowId} ${nodeId}`} row={rowId} node={nodeId} obstacle={node.isObstacle} unit={node.unit}/>;
                 })}
               </div>
             );
@@ -83,7 +83,7 @@ const Board = (props) => {
           }
           return (
             <div className={colorClass}>
-              {player.turn && <b>{player.name}</b>}
+              {player.turn && <b>{"»" + player.name}</b>}
               {!player.turn && <p>{player.name}</p>}
             </div>
           );
