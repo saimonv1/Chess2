@@ -3,7 +3,7 @@ import React from 'react';
 const GameContext = React.createContext({
     players: [],
     gameStatus: false,
-    map: [[],[]],
+    map: [],
 
     name: '',
     color: -1,

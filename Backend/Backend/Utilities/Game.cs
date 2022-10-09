@@ -31,7 +31,7 @@ public class Game
     public string NextPlayer()
     {
         var connectionId = ConnectedPlayers[CurrentPlayerTurn].ConnectionID;
-        CurrentPlayerTurn = CurrentPlayerTurn == ConnectedPlayers.Capacity - 1 ? 0 : CurrentPlayerTurn + 1;
+        CurrentPlayerTurn = CurrentPlayerTurn == ConnectedPlayers.Count - 1 ? 0 : CurrentPlayerTurn + 1;
         return connectionId;
     }
 
@@ -91,7 +91,12 @@ public class Game
             _ => (newX, newY)
         };
 
-        return Map.Tiles[newX, newY].IsObstacle ? (-1,-1,-1, -1) : (oldX, oldY, newX, newY);
+        if (Map.Tiles[newX, newY].IsObstacle)
+            return (-1, -1, -1, -1);
+
+        ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosX = newX;
+        ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosY = newY;
+        return (oldX, oldY, newX, newY);
     }
 
     public Color GetFirstAvailableFreeColor()

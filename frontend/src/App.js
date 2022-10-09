@@ -40,7 +40,6 @@ function App() {
           users.forEach((user) => {
             gameCtx.addPlayer(user);
           });
-          console.log(gameCtx.color);
         }
       });
 
@@ -61,7 +60,6 @@ function App() {
       });
 
       connection.on("Map", (map) => {
-        console.log(map);
         gameCtx.insertMap(map);
       });
 

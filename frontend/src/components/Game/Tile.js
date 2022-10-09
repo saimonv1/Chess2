@@ -9,7 +9,6 @@ const Tile = (props) => {
     const gameCtx = useContext(GameContext);
 
     let colClass;
-
     if(gameCtx.color === 0){
         colClass = classes.red;
     }
@@ -26,14 +25,31 @@ const Tile = (props) => {
         colClass = classes.yellow;
     }
     
+    let unitClass = '';
+    if(props.unit) {
+        if(props.unit.color === 0){
+            unitClass = classes.redtank;
+        }
+    
+        if(props.unit.color === 2){
+            unitClass = classes.greentank;
+        }
+    
+        if(props.unit.color === 1){
+            unitClass = classes.bluetank;
+        }
+    
+        if(props.unit.color === 3){
+            unitClass = classes.yellowtank;
+        }
+    }
+
     const onClickHandler = () => {
         setIsPressed(prevState => !prevState);
-
-        console.log('X: ' + props.node + ' Y: ' + props.row);
     };
 
     return (
-        <div onClick={onClickHandler} className={`${classes.tile} ${isPressed ? colClass : ''} ${props.obstacle ? classes.obstacle : ''} `}></div>
+        <div onClick={onClickHandler} className={`${classes.tile} ${colClass} ${isPressed ? classes.isPressed : ''} ${unitClass} ${props.obstacle ? classes.obstacle : ''} `}></div>
     );
 };
 

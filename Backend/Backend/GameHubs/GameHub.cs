@@ -67,7 +67,7 @@ public class GameHub : Hub
                     MovesPerTurn = 1,
                     Color = Color.Blue,
                     PosX = 10,
-                    PosY = 19
+                    PosY = 18
                 }
             },
             Color.Green => new List<Unit>
@@ -94,7 +94,7 @@ public class GameHub : Hub
                     MaxHealth = 2,
                     MovesPerTurn = 1,
                     Color = Color.Yellow,
-                    PosX = 19,
+                    PosX = 18,
                     PosY = 10
                 }
             },
@@ -130,7 +130,7 @@ public class GameHub : Hub
             return;
         }
 
-        await Clients.Group(GameGroup).SendAsync("MoveItem", oldX, oldY, newX, newY);
+        await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
     }
 
@@ -141,7 +141,7 @@ public class GameHub : Hub
         await Clients.Group(GameGroup).SendAsync("ReadyStatus", connectionId, ready);
         if (Game.IsGameStarting)
         {
-            await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap().Tiles);
+            await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap().Tiles.Invert());
             await Clients.Group(GameGroup).SendAsync("FirstTurn", _game.NextPlayer());
             await Clients.Group(GameGroup).SendAsync("GameStatus", true);
         }

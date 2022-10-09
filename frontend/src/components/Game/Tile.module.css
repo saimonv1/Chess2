@@ -9,33 +9,68 @@
     margin: 1px;
 }
 
-.tile.red {
+.tile.red.pressed {
     border-color: red;
 }
 
-.tile.green {
+.tile.green.pressed {
     border-color: green;
 }
 
-.tile.blue {
+.tile.blue.pressed {
     border-color: blue;
 }
 
-.tile.yellow {
+.tile.yellow.pressed {
     border-color: yellow;
 }
+
 
 
 .tile.obstacle {
     background-color: black;
 }
 
-.tile.wreck {
-    background-image: url(../../assets/sprites/wreck-01.png);
+
+
+.tile.redwreck {
+    background-image: url(../../assets/sprites/Red/wreckRed.png);
     background-size: 2rem 2rem;
 }
 
-.tile.tank {
-    background-image: url(../../assets/sprites/tankB-01.png);
+.tile.greenwreck {
+    background-image: url(../../assets/sprites/Green/wreckGreen.png);
+    background-size: 2rem 2rem;
+}
+
+.tile.bluewreck {
+    background-image: url(../../assets/sprites/Blue/wreckBlue.png);
+    background-size: 2rem 2rem;
+}
+
+.tile.yellowwreck {
+    background-image: url(../../assets/sprites/Yellow/wreckYellow.png);
+    background-size: 2rem 2rem;
+}
+
+
+
+.tile.redtank {
+    background-image: url(../../assets/sprites/Red/tankBRed.png);
+    background-size: 2rem 2rem;
+}
+
+.tile.greentank {
+    background-image: url(../../assets/sprites/Green/TankBGreen.png);
+    background-size: 2rem 2rem;
+}
+
+.tile.bluetank {
+    background-image: url(../../assets/sprites/Blue/TankBBlue.png);
+    background-size: 2rem 2rem;
+}
+
+.tile.yellowtank {
+    background-image: url(../../assets/sprites/Yellow/TankBYellow.png);
     background-size: 2rem 2rem;
 }
