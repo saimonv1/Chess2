@@ -49,13 +49,13 @@ const Board = (props) => {
       console.log(e);
     }
   };
-
+  console.log(gameCtx.map);
   return (
     <div className={classes.divrow}>
       <div className={classes.divcolumnsm}>
         <h1>Controls</h1>
         <form onSubmit={onFormSubmitHandler}>
-          <label style={{ display: "block" }} for="move">
+          <label style={{ display: "block" }} htmlFor="move">
             Choose a move:
           </label>
           <select id="move" name="move">

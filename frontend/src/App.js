@@ -57,10 +57,11 @@ function App() {
       });
 
       connection.on("GameStatus", (status) => {
-        gameCtx.gameStatus(status);
+        gameCtx.changeGameStatus(status);
       });
 
       connection.on("Map", (map) => {
+        console.log(map);
         gameCtx.insertMap(map);
       });
 

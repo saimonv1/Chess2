@@ -13,6 +13,11 @@ public class Game
     private static List<Player> ConnectedPlayers { get; set; }
     private static Map Map { get; set; }
 
+    public static bool IsGameStarting =>
+        ConnectedPlayers.Count > 1 && ConnectedPlayers.All(p => p.IsReady);
+
+    private static int CurrentPlayerTurn = 0;
+
     private Game()
     {
         ConnectedPlayers = new List<Player>(4);
@@ -22,12 +27,21 @@ public class Game
     {
         return _game;
     }
+    
+    public string NextPlayer()
+    {
+        var connectionId = ConnectedPlayers[CurrentPlayerTurn].ConnectionID;
+        CurrentPlayerTurn = CurrentPlayerTurn == ConnectedPlayers.Capacity - 1 ? 0 : CurrentPlayerTurn + 1;
+        return connectionId;
+    }
 
     public AddPlayerState AddPlayer(Player player)
     {
         if (ConnectedPlayers.Any(p => p.Name == player.Name)) return AddPlayerState.PlayerWithNameExists;
 
         if (ConnectedPlayers.Count == 4) return AddPlayerState.ServerIsFull;
+
+        if (IsGameStarting) return AddPlayerState.GameInProgress;
 
         ConnectedPlayers.Add(player);
         return AddPlayerState.Completed;
@@ -54,6 +68,30 @@ public class Game
         if (player is not null) player.IsReady = !player.IsReady;
 
         return player?.IsReady ?? false;
+    }
+
+    public Map GenerateMap()
+    {
+        Map = MapFactory.GenerateMap(ConnectedPlayers);
+        return Map;
+    }
+
+    public (int,int,int,int) MoveItem(string connectionId, int move)
+    {
+        var unit = ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units.First();
+
+        var (oldX, oldY) = (unit.PosX, unit.PosY);
+        var (newX, newY) = (oldX, oldY);
+        (newX, newY) = move switch
+        {
+            0 => (oldX, oldY - 1),
+            1 => (oldX + 1, oldY),
+            2 => (oldX, oldY + 1),
+            3 => (oldX - 1, oldY),
+            _ => (newX, newY)
+        };
+
+        return Map.Tiles[newX, newY].IsObstacle ? (-1,-1,-1, -1) : (oldX, oldY, newX, newY);
     }
 
     public Color GetFirstAvailableFreeColor()

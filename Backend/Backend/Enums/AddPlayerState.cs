@@ -4,5 +4,6 @@ public enum AddPlayerState
 {
     PlayerWithNameExists,
     ServerIsFull,
-    Completed
+    Completed,
+    GameInProgress
 }
