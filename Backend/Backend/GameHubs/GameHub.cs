@@ -127,7 +127,7 @@ public class GameHub : Hub
         var (oldX, oldY, newX, newY) = _game.MoveItem(Context.ConnectionId, move);
         if (oldX == -1)
         {
-            await Clients.Caller.SendAsync("IllegalMove");
+            return;
         }
 
         await Clients.Group(GameGroup).SendAsync("MoveItem", oldX, oldY, newX, newY);
