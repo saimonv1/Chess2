@@ -10,26 +10,26 @@ const Tile = (props) => {
 
     let colClass;
 
-    if(gameCtx.color === 'red'){
+    if(gameCtx.color === 0){
         colClass = classes.red;
     }
 
-    if(gameCtx.color === 'green'){
+    if(gameCtx.color === 2){
         colClass = classes.green;
     }
 
-    if(gameCtx.color === 'blue'){
+    if(gameCtx.color === 1){
         colClass = classes.blue;
     }
 
-    if(gameCtx.color === 'yellow'){
+    if(gameCtx.color === 3){
         colClass = classes.yellow;
     }
     
     const onClickHandler = () => {
         setIsPressed(prevState => !prevState);
 
-        console.log('X: ' + props.row + ' Y: ' + props.node);
+        console.log('X: ' + props.node + ' Y: ' + props.row);
     };
 
     return (

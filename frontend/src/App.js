@@ -60,6 +60,26 @@ function App() {
         gameCtx.gameStatus(status);
       });
 
+      connection.on("Map", (map) => {
+        gameCtx.insertMap(map);
+      });
+
+      connection.on("FirstTurn", (connectionId) => {
+        gameCtx.changeTurnStatus(null, connectionId);
+      });
+
+      connection.on("NextTurn", (currentConnectionId, nextConnectionId) => {
+        gameCtx.changeTurnStatus(currentConnectionId, nextConnectionId);
+      });
+
+      connection.on("IllegalTurn", () => {
+
+      });
+
+      connection.on("MoveItem", (oldX, oldY, newX, newY) => {
+        gameCtx.gameMove(oldX, oldY, newX, newY);
+      });
+
       await connection
         .start()
         .then(() => {
@@ -90,7 +110,7 @@ function App() {
             connection={connection}
           />
         ) : gameCtx.gameStatus ? (
-          <Board userName={userName} />
+          <Board connection={connection} />
         ) : (
           <Lobby connection={connection} />
         )}
