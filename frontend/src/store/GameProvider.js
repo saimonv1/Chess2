@@ -4,12 +4,13 @@ import GameContext from "./game-context";
 
 const defaultGameState = {
   players: [],
-  gameStatus: false,
+  gameStatus: true,
   map: [[], []],
 
   name: "",
   color: -1,
   isReady: false,
+  isMyTurn: false,
 };
 
 const gameReducer = (state, action) => {
@@ -52,21 +53,36 @@ const gameReducer = (state, action) => {
     return { ...state, gameStatus: action.item };
   }
 
+  if(action.type === "CHANGE_TURN_STATUS") {
+    let newIsMyTurn = state.isMyTurn;
+    const newPlayers = [...state.players];
+    if(action.item.oldTurnId) {
+      const player = newPlayers.find(p => p.id === action.item.oldTurnId);
+      player.turn = false;
+      if(player.name === state.name) {
+        newIsMyTurn = false;
+      }
+    }
+
+    const player = newPlayers.find(p => p.id === action.item.newTurnId);
+    player.turn = true;
+    if(player.name === state.name) {
+      newIsMyTurn = true;
+    }
+
+    return { ...state, players: newPlayers, isMyTurn: newIsMyTurn };
+  }
+
   if (action.type === "INSERT_MAP") {
     return { ...state, map: action.item };
   }
 
   if (action.type === "GAME_MOVE") {
     let newMap = [...state.map];
-    const temp = newMap[item.toX, item.toY];
-    newMap[item.toX, item.toY] = newMap[item.fromX, item.fromY];
-    newMap[item.fromX, item.fromY] = temp;
+    const temp = newMap[action.item.toX][action.item.toY];
+    newMap[action.item.toX][action.item.toY] = newMap[action.item.fromX][action.item.fromY];
+    newMap[action.item.fromX][action.item.fromY] = temp;
     return { ...state, map: newMap };
-  }
-
-  if (action.type === "DEFAULT_MAP") {
-    let defaultMap = [[],[]];
-    return { ...state, map: defaultMap };
   }
 
   return defaultGameState;
@@ -109,6 +125,10 @@ const GameProvider = (props) => {
     dispatchGameAction({ type: "CHANGE_GAME_STATUS", item: status });
   };
 
+  const changeTurnStatusHandler = (oldTurnId, newTurnId) => {
+    dispatchGameAction({ type: "CHANGE_TURN_STATUS", item: { oldTurnId, newTurnId } });
+  }
+
   const insertMapHandler = (map) => {
     dispatchGameAction({ type: "INSERT_MAP", item: map });
   };
@@ -128,6 +148,7 @@ const GameProvider = (props) => {
     name: gameState.name,
     color: gameState.color,
     isReady: gameState.isReady,
+    isMyTurn: gameState.isMyTurn,
 
     addPlayer: addPlayerHandler,
     removePlayer: removePlayerHandler,
@@ -136,6 +157,7 @@ const GameProvider = (props) => {
 
     changeReadyStatus: changeReadyStatusHandler,
     changeMyReadyStatus: changeMyReadyStatusHandler,
+    changeTurnStatus: changeTurnStatusHandler,
 
     changeGameStatus: changeGameStatusHandler,
     insertMap: insertMapHandler,

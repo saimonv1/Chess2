@@ -10,22 +10,32 @@
 }
 
 .tile.red {
-    background-color: red;
+    border-color: red;
 }
 
 .tile.green {
-    background-color: green;
+    border-color: green;
 }
 
 .tile.blue {
-    background-color: blue;
+    border-color: blue;
 }
 
 .tile.yellow {
-    background-color: yellow;
+    border-color: yellow;
 }
 
 
 .tile.obstacle {
     background-color: black;
+}
+
+.tile.wreck {
+    background-image: url(../../assets/sprites/wreck-01.png);
+    background-size: 2rem 2rem;
+}
+
+.tile.tank {
+    background-image: url(../../assets/sprites/tankB-01.png);
+    background-size: 2rem 2rem;
 }
