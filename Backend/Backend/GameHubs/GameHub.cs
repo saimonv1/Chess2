@@ -40,6 +40,66 @@ public class GameHub : Hub
         Console.WriteLine("Entered name: " + name);
         var color = _game.GetFirstAvailableFreeColor();
         var player = new Player(Context.ConnectionId, name, color, null);
+        player.Units = player.Color switch
+        {
+            Color.Red => new List<Unit>
+            {
+                new Tank
+                {
+                    CurrentHealth = 2,
+                    Damage = 1,
+                    IsAerial = false,
+                    MaxHealth = 2,
+                    MovesPerTurn = 1,
+                    Color = Color.Red,
+                    PosX = 10,
+                    PosY = 1
+                }
+            },
+            Color.Blue => new List<Unit>
+            {
+                new Tank
+                {
+                    CurrentHealth = 2,
+                    Damage = 1,
+                    IsAerial = false,
+                    MaxHealth = 2,
+                    MovesPerTurn = 1,
+                    Color = Color.Blue,
+                    PosX = 10,
+                    PosY = 19
+                }
+            },
+            Color.Green => new List<Unit>
+            {
+                new Tank
+                {
+                    CurrentHealth = 2,
+                    Damage = 1,
+                    IsAerial = false,
+                    MaxHealth = 2,
+                    MovesPerTurn = 1,
+                    Color = Color.Green,
+                    PosX = 1,
+                    PosY = 10
+                }
+            },
+            Color.Yellow => new List<Unit>
+            {
+                new Tank
+                {
+                    CurrentHealth = 2,
+                    Damage = 1,
+                    IsAerial = false,
+                    MaxHealth = 2,
+                    MovesPerTurn = 1,
+                    Color = Color.Yellow,
+                    PosX = 19,
+                    PosY = 10
+                }
+            },
+            _ => player.Units
+        };
         switch (_game.AddPlayer(player))
         {
             case AddPlayerState.PlayerWithNameExists:
@@ -48,6 +108,10 @@ public class GameHub : Hub
                 break;
             case AddPlayerState.ServerIsFull:
                 await Clients.Caller.SendAsync("ConfirmUserName", name, "Cannot join the game. The game is full.");
+                break;
+            case AddPlayerState.GameInProgress:
+                await Clients.Caller.SendAsync("ConfirmUserName", name,
+                    "Cannot join the game. The game is in progress.");
                 break;
             case AddPlayerState.Completed:
             default:
@@ -58,10 +122,28 @@ public class GameHub : Hub
         }
     }
 
+    public async Task SendMove(int move)
+    {
+        var (oldX, oldY, newX, newY) = _game.MoveItem(Context.ConnectionId, move);
+        if (oldX == -1)
+        {
+            await Clients.Caller.SendAsync("IllegalMove");
+        }
+
+        await Clients.Group(GameGroup).SendAsync("MoveItem", oldX, oldY, newX, newY);
+        await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+    }
+
     public async Task ReadyUp()
     {
         var connectionId = Context.ConnectionId;
         var ready = _game.ChangeReadyStatus(connectionId);
         await Clients.Group(GameGroup).SendAsync("ReadyStatus", connectionId, ready);
+        if (Game.IsGameStarting)
+        {
+            await Clients.Group(GameGroup).SendAsync("GameStatus", true);
+            await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap());
+            await Clients.Group(GameGroup).SendAsync("FirstTurn", _game.NextPlayer());
+        }
     }
 }

@@ -1,4 +1,10 @@
-﻿namespace Backend.Entities;
+﻿#region
+
+using Backend.Enums;
+
+#endregion
+
+namespace Backend.Entities;
 
 public abstract class Unit
 {
@@ -7,6 +13,7 @@ public abstract class Unit
     public int MovesPerTurn { get; set; }
     public int Damage { get; set; }
     public bool IsAerial { get; set; }
+    public Color Color { get; set; }
     public int PosX { get; set; }
     public int PosY { get; set; }
 }
