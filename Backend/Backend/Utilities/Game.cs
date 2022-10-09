@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Linq.Expressions;
 using Backend.Entities;
 using Backend.Enums;
 
@@ -91,11 +92,12 @@ public class Game
             _ => (newX, newY)
         };
 
-        if (Map.Tiles[newX, newY].IsObstacle)
+        if (Map.Tiles[newX, newY].IsObstacle || Map.Tiles[newX, newY].Unit is not null)
             return (-1, -1, -1, -1);
 
         ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosX = newX;
         ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosY = newY;
+        (Map.Tiles[oldX, oldY], Map.Tiles[newX, newY]) = (Map.Tiles[newX, newY], Map.Tiles[oldX, oldY]);
         return (oldX, oldY, newX, newY);
     }
 
