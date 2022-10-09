@@ -141,9 +141,9 @@ public class GameHub : Hub
         await Clients.Group(GameGroup).SendAsync("ReadyStatus", connectionId, ready);
         if (Game.IsGameStarting)
         {
-            await Clients.Group(GameGroup).SendAsync("GameStatus", true);
-            await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap());
+            await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap().Tiles);
             await Clients.Group(GameGroup).SendAsync("FirstTurn", _game.NextPlayer());
+            await Clients.Group(GameGroup).SendAsync("GameStatus", true);
         }
     }
 }

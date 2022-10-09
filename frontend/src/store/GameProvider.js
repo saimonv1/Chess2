@@ -4,7 +4,7 @@ import GameContext from "./game-context";
 
 const defaultGameState = {
   players: [],
-  gameStatus: true,
+  gameStatus: false,
   map: [[], []],
 
   name: "",
@@ -57,15 +57,15 @@ const gameReducer = (state, action) => {
     let newIsMyTurn = state.isMyTurn;
     const newPlayers = [...state.players];
     if(action.item.oldTurnId) {
-      const player = newPlayers.find(p => p.id === action.item.oldTurnId);
-      player.turn = false;
+      let player = newPlayers.find(p => p.id === action.item.oldTurnId);
+      player = {...player, turn: false};
       if(player.name === state.name) {
         newIsMyTurn = false;
       }
     }
 
-    const player = newPlayers.find(p => p.id === action.item.newTurnId);
-    player.turn = true;
+    let player = newPlayers.find(p => p.id === action.item.newTurnId);
+    player = {...player, turn: true};
     if(player.name === state.name) {
       newIsMyTurn = true;
     }
