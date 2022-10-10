@@ -73,7 +73,7 @@ public class Game
 
     public Map GenerateMap()
     {
-        Map = MapFactory.GenerateMap(ConnectedPlayers);
+        Map = new RandomObstacleMapFactory().GenerateMap(ConnectedPlayers);
         return Map;
     }
 
