@@ -15,18 +15,22 @@ public class EmptyMapFactory : IMapFactory
 {
     public Map GenerateMap(List<Player> players)
     {
+        // for easier map size change for different player amounts
+        var size_x = 20;
+        var size_y = 20;
+
         var map = new Map
         {
-            Tiles = new Tile[20, 20]
+            Tiles = new Tile[size_x, size_y]
         };
 
-        for (var i = 0; i < 20; i++)
+        for (var i = 0; i < size_x; i++)
         {
-            for (var j = 0; j < 20; j++)
+            for (var j = 0; j < size_y; j++)
             {
                 map.Tiles[i, j] = new Tile();
 
-                if (i is 0 or 19 || j is 0 or 19)
+                if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
@@ -46,27 +50,32 @@ public class PlusMapFactory : IMapFactory
 {
     public Map GenerateMap(List<Player> players)
     {
+        var size_x = 20;
+        var size_y = 20;
+
+        var corner_size = 6;
+
         var map = new Map
         {
-            Tiles = new Tile[20, 20]
+            Tiles = new Tile[size_x, size_y]
         };
 
-        for (var i = 0; i < 20; i++)
+        for (var i = 0; i < size_x; i++)
         {
-            for (var j = 0; j < 20; j++)
+            for (var j = 0; j < size_y; j++)
             {
                 map.Tiles[i, j] = new Tile();
 
-                if (i is 0 or 19 || j is 0 or 19) // border
+                if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
-                if ((i <= 6 || i >= 13) && j <= 6) // top half
+                else if ((i <= corner_size || i >= (size_x - corner_size - 1)) && j <= corner_size) // top half
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
-                else if ((i <= 6 || i >= 13) && j >= 13) // bottom half
-                { 
+                else if ((i <= corner_size || i >= (size_x - corner_size - 1)) && j >= (size_y - corner_size - 1)) // bottom half
+                {
                     map.Tiles[i, j].IsObstacle = true;
                 }
             }
@@ -85,24 +94,29 @@ public class RandomObstacleMapFactory : IMapFactory
 {
     public Map GenerateMap(List<Player> players)
     {
+        var size_x = 20;
+        var size_y = 20;
+
+        var no_obstacle_border_size = 2;
+        var randomness_factor = 25;
+
         var map = new Map
         {
-            Tiles = new Tile[20, 20]
+            Tiles = new Tile[size_x, size_y]
         };
 
-        for (var i = 0; i < 20; i++)
+        for (var i = 0; i < size_x; i++)
         {
-            for (var j = 0; j < 20; j++)
+            for (var j = 0; j < size_y; j++)
             {
                 map.Tiles[i, j] = new Tile();
-
                 var random = new Random();
 
-                if (i is 0 or 19 || j is 0 or 19)
+                if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
-                else if (i > 2 && i < 18 && j > 2 && j < 18 && random.Next(0, 25) == 0)
+                else if (i > no_obstacle_border_size && i < (size_x - 1 - no_obstacle_border_size) && j > no_obstacle_border_size && j < (size_y - 1 - no_obstacle_border_size) && random.Next(0, randomness_factor) == 0)
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
