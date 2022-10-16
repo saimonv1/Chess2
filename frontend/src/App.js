@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import useSound from 'use-sound';
 
 import Layout from "./components/Layout/Layout";
 import Board from "./components/Game/Board";
@@ -8,12 +7,8 @@ import User from "./components/Game/User";
 import Lobby from "./components/Game/Lobby";
 import GameContext from "./store/game-context";
 
-import backgroundMusic from '../src/assets/sounds/background-music.mp3';
 
 function App() {
-  const [playMusic] = useSound(backgroundMusic, { volume: 0.1 });
-  playMusic();
-
   const [connection, setConnection] = useState();
 
   const [isLoading, setIsLoading] = useState(true);

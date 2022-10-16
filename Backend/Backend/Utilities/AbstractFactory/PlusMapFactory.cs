@@ -1,12 +1,14 @@
-﻿using Backend.Entities;
+﻿#region
+
+using Backend.Entities;
 using Backend.Enums;
-using Backend.Utilities.Factory;
+
+#endregion
 
 namespace Backend.Utilities.AbstractFactory;
 
 public class PlusMapFactory : MapFactory
 {
-    private Creator _creator = new UnitFactory();
     public override Map GenerateMap(List<Player> players)
     {
         var size_x = 20;
@@ -25,15 +27,16 @@ public class PlusMapFactory : MapFactory
             {
                 map.Tiles[i, j] = new Tile();
 
-                if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))
+                if (i == 0 || i == size_x - 1 || j == 0 || j == size_y - 1)
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
-                else if ((i <= corner_size || i >= (size_x - corner_size - 1)) && j <= corner_size) // top half
+                else if ((i <= corner_size || i >= size_x - corner_size - 1) && j <= corner_size) // top half
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
-                else if ((i <= corner_size || i >= (size_x - corner_size - 1)) && j >= (size_y - corner_size - 1)) // bottom half
+                else if ((i <= corner_size || i >= size_x - corner_size - 1) &&
+                         j >= size_y - corner_size - 1) // bottom half
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
@@ -45,7 +48,7 @@ public class PlusMapFactory : MapFactory
             var teamColor = player.Color;
             player.Units = _creator.GetUnits(teamColor, MapType.Plus);
             var unit = player.Units.First();
-            
+
             map.Tiles[unit.PosX, unit.PosY].Unit = unit;
         }
 
