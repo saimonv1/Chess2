@@ -3,6 +3,7 @@
 using System.Linq.Expressions;
 using Backend.Entities;
 using Backend.Enums;
+using Backend.Utilities.AbstractFactory;
 
 #endregion
 
@@ -76,7 +77,7 @@ public class Game
 
     public Map GenerateMap()
     {
-        _mapSubject.Map = MapFactory.GenerateMap(_connectedPlayers);
+        _mapSubject.Map = new PlusMapFactory().GenerateMap(_connectedPlayers);
         return _mapSubject.Map;
     }
 

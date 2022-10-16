@@ -47,66 +47,6 @@ public class GameHub : Hub
         Console.WriteLine("Entered name: " + name);
         var color = _game.GetFirstAvailableFreeColor();
         var player = new Player(Context.ConnectionId, name, color, null);
-        player.Units = player.Color switch
-        {
-            Color.Red => new List<Unit>
-            {
-                new Tank
-                {
-                    CurrentHealth = 2,
-                    Damage = 1,
-                    IsAerial = false,
-                    MaxHealth = 2,
-                    MovesPerTurn = 1,
-                    Color = Color.Red,
-                    PosX = 10,
-                    PosY = 1
-                }
-            },
-            Color.Blue => new List<Unit>
-            {
-                new Tank
-                {
-                    CurrentHealth = 2,
-                    Damage = 1,
-                    IsAerial = false,
-                    MaxHealth = 2,
-                    MovesPerTurn = 1,
-                    Color = Color.Blue,
-                    PosX = 10,
-                    PosY = 18
-                }
-            },
-            Color.Green => new List<Unit>
-            {
-                new Tank
-                {
-                    CurrentHealth = 2,
-                    Damage = 1,
-                    IsAerial = false,
-                    MaxHealth = 2,
-                    MovesPerTurn = 1,
-                    Color = Color.Green,
-                    PosX = 1,
-                    PosY = 10
-                }
-            },
-            Color.Yellow => new List<Unit>
-            {
-                new Tank
-                {
-                    CurrentHealth = 2,
-                    Damage = 1,
-                    IsAerial = false,
-                    MaxHealth = 2,
-                    MovesPerTurn = 1,
-                    Color = Color.Yellow,
-                    PosX = 18,
-                    PosY = 10
-                }
-            },
-            _ => player.Units
-        };
         switch (_game.AddPlayer(player))
         {
             case AddPlayerState.PlayerWithNameExists:
