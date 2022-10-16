@@ -1,6 +1,7 @@
 #region
 
 using Backend.GameHubs;
+using Microsoft.AspNetCore.SignalR;
 
 #endregion
 

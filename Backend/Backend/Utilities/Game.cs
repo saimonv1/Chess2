@@ -12,17 +12,18 @@ namespace Backend.Utilities;
 public class Game
 {
     private static readonly Game _game = new();
-    private static List<Player> ConnectedPlayers { get; set; }
-    private static Map Map { get; set; }
+    private static List<Player> _connectedPlayers { get; set; }
+    private static Subject _mapSubject { get; set; }
 
     public static bool IsGameStarting =>
-        ConnectedPlayers.Count > 1 && ConnectedPlayers.All(p => p.IsReady);
+        _connectedPlayers.Count > 1 && _connectedPlayers.All(p => p.IsReady);
 
     private static int CurrentPlayerTurn = 0;
 
     private Game()
     {
-        ConnectedPlayers = new List<Player>(4);
+        _connectedPlayers = new List<Player>(4);
+        _mapSubject = new Subject();
     }
 
     public static Game GetGameInstance()
@@ -32,41 +33,43 @@ public class Game
     
     public string NextPlayer()
     {
-        var connectionId = ConnectedPlayers[CurrentPlayerTurn].ConnectionID;
-        CurrentPlayerTurn = CurrentPlayerTurn == ConnectedPlayers.Count - 1 ? 0 : CurrentPlayerTurn + 1;
+        var connectionId = _connectedPlayers[CurrentPlayerTurn].ConnectionID;
+        CurrentPlayerTurn = CurrentPlayerTurn == _connectedPlayers.Count - 1 ? 0 : CurrentPlayerTurn + 1;
         return connectionId;
     }
 
     public AddPlayerState AddPlayer(Player player)
     {
-        if (ConnectedPlayers.Any(p => p.Name == player.Name)) return AddPlayerState.PlayerWithNameExists;
+        if (_connectedPlayers.Any(p => p.Name == player.Name)) return AddPlayerState.PlayerWithNameExists;
 
-        if (ConnectedPlayers.Count == 4) return AddPlayerState.ServerIsFull;
+        if (_connectedPlayers.Count == 4) return AddPlayerState.ServerIsFull;
 
         if (IsGameStarting) return AddPlayerState.GameInProgress;
 
-        ConnectedPlayers.Add(player);
+        _connectedPlayers.Add(player);
+        _mapSubject.Subscribe(player);
         return AddPlayerState.Completed;
     }
 
     public void RemovePlayer(Player player)
     {
-        ConnectedPlayers.Remove(player);
+        _connectedPlayers.Remove(player);
+        _mapSubject.Unsubscribe(player);
     }
 
     public Player? GetPlayerByConnectionId(string connectionId)
     {
-        return ConnectedPlayers.FirstOrDefault(p => p.ConnectionID == connectionId);
+        return _connectedPlayers.FirstOrDefault(p => p.ConnectionID == connectionId);
     }
 
     public List<Player> GetPlayers()
     {
-        return ConnectedPlayers.ToList();
+        return _connectedPlayers.ToList();
     }
 
     public bool ChangeReadyStatus(string connectionId)
     {
-        var player = ConnectedPlayers.FirstOrDefault(p => p.ConnectionID == connectionId);
+        var player = _connectedPlayers.FirstOrDefault(p => p.ConnectionID == connectionId);
         if (player is not null) player.IsReady = !player.IsReady;
 
         return player?.IsReady ?? false;
@@ -74,13 +77,13 @@ public class Game
 
     public Map GenerateMap()
     {
-        Map = new PlusMapFactory().GenerateMap(ConnectedPlayers);
-        return Map;
+        _mapSubject.Map = new PlusMapFactory().GenerateMap(_connectedPlayers);
+        return _mapSubject.Map;
     }
 
     public (int,int,int,int) MoveItem(string connectionId, int move)
     {
-        var unit = ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units.First();
+        var unit = _connectedPlayers.First(p => p.ConnectionID == connectionId).Units.First();
 
         var (oldX, oldY) = (unit.PosX, unit.PosY);
         var (newX, newY) = (oldX, oldY);
@@ -93,12 +96,15 @@ public class Game
             _ => (newX, newY)
         };
 
-        if (Map.Tiles[newX, newY].IsObstacle || Map.Tiles[newX, newY].Unit is not null)
+        if (_mapSubject.Map.Tiles[newX, newY].IsObstacle || _mapSubject.Map.Tiles[newX, newY].Unit is not null)
             return (-1, -1, -1, -1);
 
-        ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosX = newX;
-        ConnectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosY = newY;
-        (Map.Tiles[oldX, oldY], Map.Tiles[newX, newY]) = (Map.Tiles[newX, newY], Map.Tiles[oldX, oldY]);
+        _connectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosX = newX;
+        _connectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosY = newY;
+        var newMap = _mapSubject.Map;
+        (newMap.Tiles[oldX, oldY], newMap.Tiles[newX, newY]) = (newMap.Tiles[newX, newY], newMap.Tiles[oldX, oldY]);
+        _mapSubject.Map = newMap;
+        //(Map.Tiles[oldX, oldY], Map.Tiles[newX, newY]) = (Map.Tiles[newX, newY], Map.Tiles[oldX, oldY]);
         return (oldX, oldY, newX, newY);
     }
 
@@ -106,7 +112,7 @@ public class Game
     {
         foreach (var color in Enum.GetValues<Color>())
         {
-            if (ConnectedPlayers.All(p => p.Color != color))
+            if (_connectedPlayers.All(p => p.Color != color))
             {
                 return color;
             }
