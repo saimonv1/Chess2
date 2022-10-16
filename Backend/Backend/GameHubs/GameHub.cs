@@ -11,8 +11,15 @@ namespace Backend.GameHubs;
 
 public class GameHub : Hub
 {
+    public static GameHub Instance { get; private set; }
+
     private readonly Game _game = Game.GetGameInstance();
     private const string GameGroup = "GAME";
+
+    public GameHub()
+    {
+        Instance = this;
+    }
 
     public override async Task OnConnectedAsync()
     {
@@ -130,7 +137,7 @@ public class GameHub : Hub
             return;
         }
 
-        await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
+        //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
     }
 
