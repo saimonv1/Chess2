@@ -1,6 +1,9 @@
 ﻿#region
 
 using Backend.Enums;
+using Backend.GameHubs;
+using Backend.Utilities;
+using Microsoft.AspNetCore.SignalR;
 
 #endregion
 
@@ -21,5 +24,10 @@ public class Player
         Color = color;
         IsReady = false;
         Units = units;
+    }
+
+    public async Task Update(Map map)
+    {
+        await GameHub.Instance.Clients.Client(this.ConnectionID).SendAsync("Map", map.Tiles.Invert());
     }
 }
