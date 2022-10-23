@@ -81,6 +81,19 @@ public class Game
         return _mapSubject.Map;
     }
 
+    public void ChangeMap(MapType type)
+    {
+        var newMap = type switch
+        {
+            MapType.Empty => new EmptyMapFactory().GenerateMap(_connectedPlayers),
+            MapType.Plus => new PlusMapFactory().GenerateMap(_connectedPlayers),
+            MapType.O => new OMapFactory().GenerateMap(_connectedPlayers),
+            MapType.Random => new RandomMapFactory().GenerateMap(_connectedPlayers),
+        };
+        Console.WriteLine(newMap.ToString());
+        _mapSubject.Map = newMap;
+    }
+
     public (int,int,int,int) MoveItem(string connectionId, int move)
     {
         var unit = _connectedPlayers.First(p => p.ConnectionID == connectionId).Units.First();

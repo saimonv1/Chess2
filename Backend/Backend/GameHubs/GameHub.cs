@@ -3,6 +3,7 @@
 using Backend.Entities;
 using Backend.Enums;
 using Backend.Utilities;
+using Backend.Utilities.AbstractFactory;
 using Microsoft.AspNetCore.SignalR;
 
 #endregion
@@ -79,6 +80,11 @@ public class GameHub : Hub
 
         //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+    }
+
+    public async Task MapChange(MapType type)
+    {
+        _game.ChangeMap(type);
     }
 
     public async Task ReadyUp()

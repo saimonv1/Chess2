@@ -43,7 +43,11 @@ public static class MapPrototype
 
             _map = map;
 
-            return map;
+            return (Map)_map.Clone();
+        }
+        set
+        {
+            return;
         }
     }
 }

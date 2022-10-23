@@ -35,6 +35,17 @@ const Board = (props) => {
       console.log(e);
     }
   };
+
+  const onMapChangeSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      await props.connection.invoke("MapChange", event.target.mapChange.value);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <div className={classes.divrow}>
       <div className={classes.divcolumnsm}>
@@ -50,6 +61,19 @@ const Board = (props) => {
             <option value="down">Down</option>
           </select>
           <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
+        </form>
+
+        <form onSubmit={onMapChangeSubmitHandler}>
+          <label style={{ display: "block" }} htmlFor="mapChange">
+            Change a map:
+          </label>
+          <select id="mapChange" name="mapChange">
+            <option value="0">Empty</option>
+            <option value="1">Plus</option>
+            <option value="2">O</option>
+            <option value="3">Random</option>
+          </select>
+          <input className={classes.test} type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
         </form>
       </div>
 
