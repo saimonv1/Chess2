@@ -3,5 +3,7 @@
 public enum MapType
 {
     Empty,
-    Plus
+    Plus,
+    O,
+    Random
 }

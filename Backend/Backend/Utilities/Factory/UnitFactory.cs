@@ -10,6 +10,8 @@ public class UnitFactory : Creator
         {
             MapType.Empty => GenerateForEmptyMap(teamColor),
             MapType.Plus => GenerateForPlusMap(teamColor),
+            MapType.O => GenerateForOMap(teamColor),
+            MapType.Random => GenerateForRandomMap(teamColor),
             _ => new List<Unit>()
         };
 
@@ -32,4 +34,25 @@ public class UnitFactory : Creator
             Color.Yellow => new List<Unit> { new Tank(teamColor, 10, 18) },
             _ => new List<Unit>()
         };
+
+    private List<Unit> GenerateForOMap(Color teamColor) =>
+        teamColor switch
+        {
+            Color.Red => new List<Unit> { new Tank(teamColor, 1, 10) },
+            Color.Green => new List<Unit> { new Tank(teamColor, 10, 1) },
+            Color.Blue => new List<Unit> { new Tank(teamColor, 18, 10) },
+            Color.Yellow => new List<Unit> { new Tank(teamColor, 10, 18) },
+            _ => new List<Unit>()
+        };
+
+    private List<Unit> GenerateForRandomMap(Color teamColor) =>
+        teamColor switch
+        {
+            Color.Red => new List<Unit> { new Tank(teamColor, 1, 10) },
+            Color.Green => new List<Unit> { new Tank(teamColor, 10, 1) },
+            Color.Blue => new List<Unit> { new Tank(teamColor, 18, 10) },
+            Color.Yellow => new List<Unit> { new Tank(teamColor, 10, 18) },
+            _ => new List<Unit>()
+        };
+
 }

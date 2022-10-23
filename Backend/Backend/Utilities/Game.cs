@@ -77,7 +77,7 @@ public class Game
 
     public Map GenerateMap()
     {
-        _mapSubject.Map = new PlusMapFactory().GenerateMap(_connectedPlayers);
+        _mapSubject.Map = new RandomMapFactory().GenerateMap(_connectedPlayers);
         return _mapSubject.Map;
     }
 
