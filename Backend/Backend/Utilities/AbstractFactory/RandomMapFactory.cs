@@ -16,6 +16,7 @@ public class RandomMapFactory : MapFactory
 
         var no_obstacle_border_size = 2;
         var randomness_factor = 25;
+        var random = new Random();
 
         var map = MapPrototype.Map;
 
@@ -23,13 +24,7 @@ public class RandomMapFactory : MapFactory
         {
             for (var j = 0; j < size_y; j++)
             {
-                var random = new Random();
-
-                if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))
-                {
-                    map.Tiles[i, j].IsObstacle = true;
-                }
-                else if (i > no_obstacle_border_size && i < (size_x - 1 - no_obstacle_border_size) && j > no_obstacle_border_size && j < (size_y - 1 - no_obstacle_border_size) && random.Next(0, randomness_factor) == 0)
+                if (i > no_obstacle_border_size && i < (size_x - 1 - no_obstacle_border_size) && j > no_obstacle_border_size && j < (size_y - 1 - no_obstacle_border_size) && random.Next(0, randomness_factor) == 0)
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }

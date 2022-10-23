@@ -22,13 +22,7 @@ public class PlusMapFactory : MapFactory
         {
             for (var j = 0; j < size_y; j++)
             {
-                map.Tiles[i, j] = new Tile();
-
-                if (i == 0 || i == size_x - 1 || j == 0 || j == size_y - 1)
-                {
-                    map.Tiles[i, j].IsObstacle = true;
-                }
-                else if ((i <= corner_size || i >= size_x - corner_size - 1) && j <= corner_size) // top half
+                if ((i <= corner_size || i >= size_x - corner_size - 1) && j <= corner_size) // top half
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }

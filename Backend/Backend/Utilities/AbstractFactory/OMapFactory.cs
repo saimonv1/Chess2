@@ -22,13 +22,7 @@ public class OMapFactory : MapFactory
         {
             for (var j = 0; j < size_y; j++)
             {
-                var random = new Random();
-
-                if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))
-                {
-                    map.Tiles[i, j].IsObstacle = true;
-                }
-                else if (i > no_obstacle_border_size && i < (size_x - 1 - no_obstacle_border_size) && j > no_obstacle_border_size && j < (size_y - 1 - no_obstacle_border_size))
+                if (i > no_obstacle_border_size && i < (size_x - 1 - no_obstacle_border_size) && j > no_obstacle_border_size && j < (size_y - 1 - no_obstacle_border_size))
                 {
                     map.Tiles[i, j].IsObstacle = true;
                 }
