@@ -11,15 +11,12 @@ public class PlusMapFactory : MapFactory
 {
     public override Map GenerateMap(List<Player> players)
     {
-        var size_x = 20;
-        var size_y = 20;
+        const int size_x = 20;
+        const int size_y = 20;
 
         var corner_size = 6;
 
-        var map = new Map
-        {
-            Tiles = new Tile[size_x, size_y]
-        };
+        var map = MapPrototype.Map;
 
         for (var i = 0; i < size_x; i++)
         {

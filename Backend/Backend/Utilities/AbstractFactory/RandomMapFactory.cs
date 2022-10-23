@@ -11,22 +11,18 @@ public class RandomMapFactory : MapFactory
 {
     public override Map GenerateMap(List<Player> players)
     {
-        var size_x = 20;
-        var size_y = 20;
+        const int size_x = 20;
+        const int size_y = 20;
 
         var no_obstacle_border_size = 2;
         var randomness_factor = 25;
 
-        var map = new Map
-        {
-            Tiles = new Tile[size_x, size_y]
-        };
+        var map = MapPrototype.Map;
 
         for (var i = 0; i < size_x; i++)
         {
             for (var j = 0; j < size_y; j++)
             {
-                map.Tiles[i, j] = new Tile();
                 var random = new Random();
 
                 if (i == 0 || i == (size_x - 1) || j == 0 || j == (size_y - 1))

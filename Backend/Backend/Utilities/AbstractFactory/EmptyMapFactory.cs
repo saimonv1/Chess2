@@ -12,20 +12,15 @@ public class EmptyMapFactory : MapFactory
     public override Map GenerateMap(List<Player> players)
     {
         // for easier map size change for different player amounts
-        var size_x = 20;
-        var size_y = 20;
+        const int size_x = 20;
+        const int size_y = 20;
 
-        var map = new Map
-        {
-            Tiles = new Tile[size_x, size_y]
-        };
+        var map = MapPrototype.Map;
 
         for (var i = 0; i < size_x; i++)
         {
             for (var j = 0; j < size_y; j++)
             {
-                map.Tiles[i, j] = new Tile();
-
                 if (i == 0 || i == size_x - 1 || j == 0 || j == size_y - 1)
                 {
                     map.Tiles[i, j].IsObstacle = true;
