@@ -15,44 +15,62 @@ public class UnitFactory : Creator
             _ => new List<Unit>()
         };
 
-    private List<Unit> GenerateForEmptyMap(Color teamColor) =>
-        teamColor switch
+    private List<Unit> GenerateForEmptyMap(Color teamColor)
+    {
+        List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new Tank(teamColor, 10, 1) },
-            Color.Green => new List<Unit> { new Tank(teamColor, 1, 10) },
-            Color.Blue => new List<Unit> { new Tank(teamColor, 10, 18) },
-            Color.Yellow => new List<Unit> { new Tank(teamColor, 18, 10) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 10, 1)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 1, 10)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 10, 18)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 18, 10)) },
             _ => new List<Unit>()
         };
+        return unitList;
+    }
+        
 
-    private List<Unit> GenerateForPlusMap(Color teamColor) =>
-        teamColor switch
+    private List<Unit> GenerateForPlusMap(Color teamColor)
+    {
+        List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new Tank(teamColor, 1, 10) },
-            Color.Green => new List<Unit> { new Tank(teamColor, 10, 1) },
-            Color.Blue => new List<Unit> { new Tank(teamColor, 18, 10) },
-            Color.Yellow => new List<Unit> { new Tank(teamColor, 10, 18) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 1, 10)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 10, 1)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 18, 10)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
             _ => new List<Unit>()
         };
-
-    private List<Unit> GenerateForOMap(Color teamColor) =>
-        teamColor switch
+        foreach(var unit in unitList)
         {
-            Color.Red => new List<Unit> { new Tank(teamColor, 1, 10) },
-            Color.Green => new List<Unit> { new Tank(teamColor, 10, 1) },
-            Color.Blue => new List<Unit> { new Tank(teamColor, 18, 10) },
-            Color.Yellow => new List<Unit> { new Tank(teamColor, 10, 18) },
+            Console.WriteLine(unit.GetLabel());
+        }
+        return unitList;
+    }
+        
+
+    private List<Unit> GenerateForOMap(Color teamColor)
+    {
+        List<Unit> unitList = teamColor switch
+        {
+            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 1, 10)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 10, 1)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 18, 10)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
             _ => new List<Unit>()
         };
+        return unitList;
+    }
+        
 
-    private List<Unit> GenerateForRandomMap(Color teamColor) =>
-        teamColor switch
+    private List<Unit> GenerateForRandomMap(Color teamColor)
+    {
+        List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new Tank(teamColor, 1, 10) },
-            Color.Green => new List<Unit> { new Tank(teamColor, 10, 1) },
-            Color.Blue => new List<Unit> { new Tank(teamColor, 18, 10) },
-            Color.Yellow => new List<Unit> { new Tank(teamColor, 10, 18) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 1, 10)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 10, 1)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 18, 10)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
             _ => new List<Unit>()
         };
-
+        return unitList;
+    }
 }

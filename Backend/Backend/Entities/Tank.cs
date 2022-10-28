@@ -15,5 +15,11 @@ public class Tank : Unit
         Color = teamColor;
         PosX = posX;
         PosY = posY;
+        Label = "Tank";
+    }
+
+    public override string GetLabel()
+    {
+        return Label;
     }
 }
