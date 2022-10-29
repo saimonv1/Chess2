@@ -3,6 +3,7 @@
 using Backend.Entities;
 using Backend.Enums;
 using Backend.Utilities;
+using Backend.Utilities.Command;
 using Microsoft.AspNetCore.SignalR;
 
 #endregion
@@ -15,6 +16,7 @@ public class GameHub : Hub
 
     private readonly Game _game = Game.GetGameInstance();
     private const string GameGroup = "GAME";
+    private readonly MoveCommand _moveCommand = new MoveCommand();
 
     public GameHub()
     {
@@ -71,14 +73,23 @@ public class GameHub : Hub
 
     public async Task SendMove(int move)
     {
-        var (oldX, oldY, newX, newY) = _game.MoveItem(Context.ConnectionId, move);
-        if (oldX == -1)
+        var moves = _moveCommand.Execute(move, Context.ConnectionId);
+
+        if(moves != 0)
         {
             return;
         }
 
+        _game.RefreshMoves();
+        _moveCommand.ClearHistory();
+
         //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+    }
+
+    public async Task Undo()
+    {
+        var moves = _moveCommand.Undo(Context.ConnectionId);
     }
 
     public async Task ReadyUp()

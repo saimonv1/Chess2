@@ -11,7 +11,8 @@ public class Tank : Unit
         Damage = 1;
         IsAerial = false;
         MaxHealth = 2;
-        MovesPerTurn = 1;
+        MovesPerTurn = 3;
+        RemainingTurns = MovesPerTurn;
         Color = teamColor;
         PosX = posX;
         PosY = posY;

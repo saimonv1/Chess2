@@ -81,31 +81,27 @@ public class Game
         return _mapSubject.Map;
     }
 
-    public (int,int,int,int) MoveItem(string connectionId, int move)
+    public void MoveItem(int oldX, int oldY, int newX, int newY)
     {
-        var unit = _connectedPlayers.First(p => p.ConnectionID == connectionId).Units.First();
-
-        var (oldX, oldY) = (unit.PosX, unit.PosY);
-        var (newX, newY) = (oldX, oldY);
-        (newX, newY) = move switch
-        {
-            0 => (oldX, oldY - 1),
-            1 => (oldX + 1, oldY),
-            2 => (oldX, oldY + 1),
-            3 => (oldX - 1, oldY),
-            _ => (newX, newY)
-        };
-
-        if (_mapSubject.Map.Tiles[newX, newY].IsObstacle || _mapSubject.Map.Tiles[newX, newY].Unit is not null)
-            return (-1, -1, -1, -1);
-
-        _connectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosX = newX;
-        _connectedPlayers.First(p => p.ConnectionID == connectionId).Units[0].PosY = newY;
         var newMap = _mapSubject.Map;
         (newMap.Tiles[oldX, oldY], newMap.Tiles[newX, newY]) = (newMap.Tiles[newX, newY], newMap.Tiles[oldX, oldY]);
         _mapSubject.Map = newMap;
-        //(Map.Tiles[oldX, oldY], Map.Tiles[newX, newY]) = (Map.Tiles[newX, newY], Map.Tiles[oldX, oldY]);
-        return (oldX, oldY, newX, newY);
+    }
+
+    public void RefreshMoves()
+    {
+        foreach (var player in _connectedPlayers)
+        {
+            foreach (var unit in player.Units)
+            {
+                unit.RemainingTurns = unit.MovesPerTurn;
+            }
+        }
+    }
+
+    public Map GetMap()
+    {
+        return _mapSubject.Map;
     }
 
     public Color GetFirstAvailableFreeColor()

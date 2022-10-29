@@ -35,6 +35,16 @@ const Board = (props) => {
       console.log(e);
     }
   };
+
+  const undoHandler = async event => {
+    event.preventDefault();
+    try {
+      await props.connection.invoke("Undo");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className={classes.divrow}>
       <div className={classes.divcolumnsm}>
@@ -51,6 +61,7 @@ const Board = (props) => {
           </select>
           <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
         </form>
+        <button onClick={undoHandler}>Undo</button>
       </div>
 
       <div className={classes.divcolumn}>
