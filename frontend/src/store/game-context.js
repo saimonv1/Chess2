@@ -7,6 +7,8 @@ const GameContext = React.createContext({
 
     name: '',
     color: -1,
+    movesLeft: 0,
+    currentUnit: 0,
     isReady: false,
     isMyTurn: false,
 
@@ -24,6 +26,9 @@ const GameContext = React.createContext({
     changeGameStatus: (status) => {},
     insertMap: (map) => {},
     gameMove: (fromX, fromY, toX, toY) => {},
+
+    setMovesLeft: (moves) => {},
+    changeCurrentUnit: (unit) => {},
 });
 
 export default GameContext;

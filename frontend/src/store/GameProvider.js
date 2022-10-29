@@ -9,6 +9,8 @@ const defaultGameState = {
 
   name: "",
   color: -1,
+  movesLeft: 0,
+  currentUnit: 0,
   isReady: false,
   isMyTurn: false,
 };
@@ -89,6 +91,14 @@ const gameReducer = (state, action) => {
     return { ...state, map: newMap };
   }
 
+  if (action.type === "MOVES_LEFT") {
+    return { ...state, movesleft: action.item };
+  }
+
+  if (action.type === "CURRENT_UNIT") {
+    return { ...state, currentUnit: action.item };
+  }
+
   return defaultGameState;
 };
 
@@ -144,6 +154,20 @@ const GameProvider = (props) => {
     });
   };
 
+  const setMovesLeftHandler = (moves) => {
+    dispatchGameAction({
+      type: "MOVES_LEFT",
+      item: moves,
+    })
+  };
+
+  const changeCurrentUnitHandler = (unit) => {
+    dispatchGameAction({
+      type: "CURRENT_UNIT",
+      item: unit,
+    })
+  };
+
   const gameContext = {
     players: gameState.players,
     gameStatus: gameState.gameStatus,
@@ -151,6 +175,8 @@ const GameProvider = (props) => {
 
     name: gameState.name,
     color: gameState.color,
+    movesLeft: gameState.movesLeft,
+    currentUnit: gameState.currentUnit,
     isReady: gameState.isReady,
     isMyTurn: gameState.isMyTurn,
 
@@ -166,6 +192,8 @@ const GameProvider = (props) => {
     changeGameStatus: changeGameStatusHandler,
     insertMap: insertMapHandler,
     gameMove: gameMoveHandler,
+    setMovesLeft: setMovesLeftHandler,
+    changeCurrentUnit: changeCurrentUnitHandler,
   };
 
   return (

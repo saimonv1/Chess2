@@ -39,10 +39,10 @@ public class UnitFactory : Creator
             Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
             _ => new List<Unit>()
         };
-        foreach(var unit in unitList)
-        {
-            Console.WriteLine(unit.GetLabel());
-        }
+        //foreach(var unit in unitList)
+        //{
+        //    Console.WriteLine(unit.GetLabel());
+        //}
         return unitList;
     }
         
