@@ -11,6 +11,7 @@ public abstract class Unit
     public virtual int CurrentHealth { get; set; }
     public virtual int MaxHealth { get; set; }
     public virtual int MovesPerTurn { get; set; }
+    public virtual int RemainingTurns { get; set; }
     public virtual int Damage { get; set; }
     public virtual bool IsAerial { get; set; }
     public virtual Color Color { get; set; }

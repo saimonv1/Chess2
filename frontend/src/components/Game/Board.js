@@ -47,7 +47,6 @@ const Board = (props) => {
       case "sleft":
         move = 7;
         break;
-
       default:
         move = -1;
         break;
@@ -59,6 +58,16 @@ const Board = (props) => {
       console.log(e);
     }
   };
+
+  const undoHandler = async event => {
+    event.preventDefault();
+    try {
+      await props.connection.invoke("Undo");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 
   const onMapChangeSubmitHandler = async (event) => {
     event.preventDefault();
@@ -91,6 +100,7 @@ const Board = (props) => {
           </select>
           <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
         </form>
+        <button onClick={undoHandler}>Undo</button>
 
         <form onSubmit={onMapChangeSubmitHandler}>
           <label style={{ display: "block" }} htmlFor="mapChange">
