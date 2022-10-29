@@ -11,9 +11,13 @@ namespace Backend.Utilities;
 
 public class Game
 {
-    private static readonly Game _game = new();
+    private static readonly Game _game = new ();
     private static List<Player> _connectedPlayers { get; set; }
     private static Subject _mapSubject { get; set; }
+    private static EmptyMapFactory _emptyMapFactory = new ();
+    private static PlusMapFactory _plusMapFactory = new ();
+    private static OMapFactory _oMapFactory = new ();
+    private static RandomMapFactory _randomMapFactory = new ();
 
     public static bool IsGameStarting =>
         _connectedPlayers.Count > 1 && _connectedPlayers.All(p => p.IsReady);
@@ -81,6 +85,18 @@ public class Game
         return _mapSubject.Map;
     }
 
+    public void ChangeMap(MapType type)
+    {
+        var newMap = type switch
+        {
+            MapType.Empty => _emptyMapFactory.GenerateMap(_connectedPlayers),
+            MapType.Plus => _plusMapFactory.GenerateMap(_connectedPlayers),
+            MapType.O => _oMapFactory.GenerateMap(_connectedPlayers),
+            MapType.Random => _randomMapFactory.GenerateMap(_connectedPlayers),
+        };
+        _mapSubject.Map = newMap;
+    }
+    
     public void MoveItem(int oldX, int oldY, int newX, int newY)
     {
         var newMap = _mapSubject.Map;

@@ -87,6 +87,11 @@ public class GameHub : Hub
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
     }
 
+    public async Task MapChange(MapType type)
+    {
+        _game.ChangeMap(type);
+    }
+
     public async Task Undo()
     {
         var moves = _moveCommand.Undo(Context.ConnectionId);

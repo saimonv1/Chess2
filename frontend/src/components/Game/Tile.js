@@ -49,7 +49,9 @@ const Tile = (props) => {
     };
 
     return (
-        <div onClick={onClickHandler} className={`${classes.tile} ${colClass} ${isPressed ? classes.pressed : ''} ${unitClass} ${props.obstacle ? classes.obstacle : ''} `}></div>
+        <div onClick={onClickHandler} className={`${classes.tile} ${colClass} ${isPressed ? classes.pressed : ''} ${unitClass} ${props.obstacle ? classes.obstacle : ''} `}>
+            {props.unit && <p className={classes.label}>{props.unit.label}</p>}
+        </div>
     );
 };
 
