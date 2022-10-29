@@ -1,4 +1,5 @@
 .tile {
+    position: relative;
     display: inline-block;
     width: 2rem;
     height: 2rem;
@@ -73,4 +74,12 @@
 .tile.yellowtank {
     background-image: url(../../assets/sprites/Yellow/TankBYellow.png);
     background-size: 2rem 2rem;
+}
+
+.label {
+    position: absolute;
+    width: 100%;
+    max-width: 100%;
+    font-size: 1%;
+    bottom: 0;
 }

@@ -7,6 +7,17 @@ import GameContext from "../../store/game-context";
 const Board = (props) => {
   const gameCtx = useContext(GameContext);
 
+  const findCurrentUnit = () => {
+    switch(gameCtx.currentUnit) {
+      case 0:
+        return "tank";
+      case 1:
+        return "heli";
+      default:
+        return "";
+    }
+  }
+
   const onFormSubmitHandler = async (event) => {
     event.preventDefault();
     
@@ -18,12 +29,25 @@ const Board = (props) => {
       case "right":
         move = 1;
         break;
-      case "left":
-        move = 3;
-        break;
       case "down":
         move = 2;
         break;
+      case "left":
+        move = 3;
+        break;
+      case "sup":
+        move = 4;
+        break;
+      case "sright":
+        move = 5;
+        break;
+      case "sdown":
+        move = 6;
+        break;
+      case "sleft":
+        move = 7;
+        break;
+
       default:
         move = -1;
         break;
@@ -50,15 +74,20 @@ const Board = (props) => {
     <div className={classes.divrow}>
       <div className={classes.divcolumnsm}>
         <h1>Controls</h1>
+        <p><b>Moves left:</b> {gameCtx.movesLeft}</p>
         <form onSubmit={onFormSubmitHandler}>
           <label style={{ display: "block" }} htmlFor="move">
-            Choose a move:
+            Choose a move for <b>{findCurrentUnit()}</b>:
           </label>
           <select id="move" name="move">
-            <option value="up">Up</option>
-            <option value="left">Left</option>
-            <option value="right">Right</option>
-            <option value="down">Down</option>
+            <option value="up">Move Up (Cost: 1)</option>
+            <option value="left">Move Left (Cost: 1)</option>
+            <option value="right">Move Right (Cost: 1)</option>
+            <option value="down">Move Down (Cost: 1)</option>
+            <option value="sup">Shoot Up (Cost: end)</option>
+            <option value="sleft">Shoot Left (Cost: end)</option>
+            <option value="sright">Shoot Right (Cost: end)</option>
+            <option value="sdown">Shoot Down (Cost: end)</option>
           </select>
           <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
         </form>
