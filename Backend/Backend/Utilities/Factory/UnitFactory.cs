@@ -1,4 +1,5 @@
 ﻿using Backend.Entities;
+using Backend.Entities.TankBuilder;
 using Backend.Enums;
 
 namespace Backend.Utilities.Factory;
@@ -17,12 +18,17 @@ public class UnitFactory : Creator
 
     private List<Unit> GenerateForEmptyMap(Color teamColor)
     {
+        var newUnit = new Tank
+        {
+            Color = teamColor
+        };
+        var builder = new TankBuilder(newUnit);
         List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 10, 1)) },
-            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 1, 10)) },
-            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 10, 18)) },
-            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 18, 10)) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(Director.ConstructTank(builder, 10, 1)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(Director.ConstructTank(builder, 1, 10)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(Director.ConstructTank(builder, 10, 18)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(Director.ConstructTank(builder, 18, 10)) },
             _ => new List<Unit>()
         };
         return unitList;
@@ -31,12 +37,17 @@ public class UnitFactory : Creator
 
     private List<Unit> GenerateForPlusMap(Color teamColor)
     {
+        var newUnit = new Tank
+        {
+            Color = teamColor
+        };
+        var builder = new TankBuilder(newUnit);
         List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 1, 10)) },
-            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 10, 1)) },
-            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 18, 10)) },
-            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(Director.ConstructTank(builder, 1, 10)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(Director.ConstructTank(builder, 10, 1)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(Director.ConstructTank(builder, 18, 10)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(Director.ConstructTank(builder, 10, 18)) },
             _ => new List<Unit>()
         };
         //foreach(var unit in unitList)
@@ -49,12 +60,17 @@ public class UnitFactory : Creator
 
     private List<Unit> GenerateForOMap(Color teamColor)
     {
+        var newUnit = new Tank
+        {
+            Color = teamColor
+        };
+        var builder = new TankBuilder(newUnit);
         List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 1, 10)) },
-            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 10, 1)) },
-            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 18, 10)) },
-            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(Director.ConstructTank(builder, 1, 10)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(Director.ConstructTank(builder, 10, 1)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(Director.ConstructTank(builder, 18, 10)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(Director.ConstructTank(builder, 10, 18)) },
             _ => new List<Unit>()
         };
         return unitList;
@@ -63,12 +79,17 @@ public class UnitFactory : Creator
 
     private List<Unit> GenerateForRandomMap(Color teamColor)
     {
+        var newUnit = new Tank
+        {
+            Color = teamColor
+        };
+        var builder = new TankBuilder(newUnit);
         List<Unit> unitList = teamColor switch
         {
-            Color.Red => new List<Unit> { new UnitRedDecorator(new Tank(teamColor, 1, 10)) },
-            Color.Green => new List<Unit> { new UnitGreenDecorator(new Tank(teamColor, 10, 1)) },
-            Color.Blue => new List<Unit> { new UnitBlueDecorator(new Tank(teamColor, 18, 10)) },
-            Color.Yellow => new List<Unit> { new UnitYellowDecorator(new Tank(teamColor, 10, 18)) },
+            Color.Red => new List<Unit> { new UnitRedDecorator(Director.ConstructTank(builder, 1, 10)) },
+            Color.Green => new List<Unit> { new UnitGreenDecorator(Director.ConstructTank(builder, 10, 1)) },
+            Color.Blue => new List<Unit> { new UnitBlueDecorator(Director.ConstructTank(builder, 18, 10)) },
+            Color.Yellow => new List<Unit> { new UnitYellowDecorator(Director.ConstructTank(builder, 10, 18)) },
             _ => new List<Unit>()
         };
         return unitList;
