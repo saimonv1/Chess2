@@ -1,4 +1,5 @@
 ﻿namespace Backend.Entities;
+using Backend.Entities.Bridge;
 
 public class Tile : ICloneable
 {

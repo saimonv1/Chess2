@@ -83,7 +83,6 @@ const Board = (props) => {
     <div className={classes.divrow}>
       <div className={classes.divcolumnsm}>
         <h1>Controls</h1>
-        <p><b>Moves left:</b> {gameCtx.movesLeft}</p>
         <form onSubmit={onFormSubmitHandler}>
           <label style={{ display: "block" }} htmlFor="move">
             Choose a move for <b>{findCurrentUnit()}</b>:
@@ -133,6 +132,7 @@ const Board = (props) => {
 
       <div className={classes.divcolumnsm}>
         <h1>Players</h1>
+        <p><b>Moves left:</b> {gameCtx.movesLeft}</p>
         {gameCtx.players.map((player) => {
           let colorClass = classes.red;
           if (player.color === 0) {
