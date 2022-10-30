@@ -74,7 +74,8 @@ public class GameHub : Hub
     public async Task SendMove(int move)
     {
         var moves = _moveCommand.Execute(move, Context.ConnectionId);
-
+        await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
+        
         if(moves != 0)
         {
             return;
@@ -85,16 +86,19 @@ public class GameHub : Hub
 
         //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+        await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
     }
 
     public async Task MapChange(MapType type)
     {
         _game.ChangeMap(type);
+        _game.RefreshMoves();
     }
 
     public async Task Undo()
     {
         var moves = _moveCommand.Undo(Context.ConnectionId);
+        await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
     }
 
     public async Task ReadyUp()
@@ -104,6 +108,7 @@ public class GameHub : Hub
         await Clients.Group(GameGroup).SendAsync("ReadyStatus", connectionId, ready);
         if (Game.IsGameStarting)
         {
+            await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
             await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap().Tiles.Invert());
             await Clients.Group(GameGroup).SendAsync("FirstTurn", _game.NextPlayer());
             await Clients.Group(GameGroup).SendAsync("GameStatus", true);
