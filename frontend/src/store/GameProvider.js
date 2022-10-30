@@ -6,10 +6,10 @@ const defaultGameState = {
   players: [],
   gameStatus: false,
   map: [],
+  movesLeft: 0,
 
   name: "",
   color: -1,
-  movesLeft: 0,
   currentUnit: 0,
   isReady: false,
   isMyTurn: false,
@@ -92,7 +92,7 @@ const gameReducer = (state, action) => {
   }
 
   if (action.type === "MOVES_LEFT") {
-    return { ...state, movesleft: action.item };
+    return { ...state, movesLeft: action.item };
   }
 
   if (action.type === "CURRENT_UNIT") {
@@ -172,10 +172,10 @@ const GameProvider = (props) => {
     players: gameState.players,
     gameStatus: gameState.gameStatus,
     map: gameState.map,
+    movesLeft: gameState.movesLeft,
 
     name: gameState.name,
     color: gameState.color,
-    movesLeft: gameState.movesLeft,
     currentUnit: gameState.currentUnit,
     isReady: gameState.isReady,
     isMyTurn: gameState.isMyTurn,

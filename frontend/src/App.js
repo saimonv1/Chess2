@@ -80,6 +80,10 @@ function App() {
         gameCtx.gameMove(oldX, oldY, newX, newY);
       });
 
+      connection.on("MovesUpdate", (newMoves) => {
+        gameCtx.setMovesLeft(newMoves);
+      });
+
       await connection
         .start()
         .then(() => {
