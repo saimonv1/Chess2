@@ -23,4 +23,9 @@ public class Tank : Unit
     {
         return Label;
     }
+
+    public void TakeDamage()
+    {
+        CurrentHealth--;
+    }
 }
