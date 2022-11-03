@@ -11,9 +11,9 @@ namespace Backend.Utilities;
 
 public class Game
 {
-    private static readonly Game _game = new ();
-    private static List<Player> _connectedPlayers { get; set; }
-    private static Subject _mapSubject { get; set; }
+    private static readonly Game _game = new();
+    private static List<Player> _connectedPlayers { get; set; } = new List<Player>(4);
+    private static Subject _mapSubject { get; set; } = new Subject();
     private static MapFactory _mapFactory = new PlusMapFactory();
 
     public static bool IsGameStarting =>
@@ -21,17 +21,13 @@ public class Game
 
     private static int CurrentPlayerTurn = 0;
 
-    private Game()
-    {
-        _connectedPlayers = new List<Player>(4);
-        _mapSubject = new Subject();
-    }
+    private Game() { }
 
     public static Game GetGameInstance()
     {
         return _game;
     }
-    
+
     public string NextPlayer()
     {
         var connectionId = _connectedPlayers[CurrentPlayerTurn].ConnectionID;
@@ -95,7 +91,7 @@ public class Game
 
         _mapSubject.Map = _mapFactory.GenerateMap(_connectedPlayers);
     }
-    
+
     public void MoveItem(int oldX, int oldY, int newX, int newY)
     {
         var newMap = _mapSubject.Map;

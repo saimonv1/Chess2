@@ -4,7 +4,7 @@
     {
         private Game game = Game.GetGameInstance();
 
-        public static Stack<(int, int)> history;
+        public static Stack<(int, int)> history = new Stack<(int, int)>();
 
         public void ClearHistory()
         {
@@ -13,11 +13,9 @@
 
         public int Execute(int moveType, string connectionId)
         {
-            if(history == null) history = new Stack<(int, int)>();
-
             var unit = game.GetPlayerByConnectionId(connectionId)!.Units.First();
 
-            if(unit.RemainingTurns == 0)
+            if (unit.RemainingTurns == 0)
             {
                 return 0;
             }
@@ -54,7 +52,7 @@
         {
             var unit = game.GetPlayerByConnectionId(connectionId)!.Units.First();
 
-            if (history == null || history.Count == 0)
+            if (history.Count == 0)
             {
                 return unit.RemainingTurns;
             }

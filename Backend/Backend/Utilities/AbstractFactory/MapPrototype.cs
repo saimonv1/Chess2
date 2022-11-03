@@ -8,7 +8,7 @@ namespace Backend.Utilities.AbstractFactory;
 
 public static class MapPrototype
 {
-    private static Map _map = null;
+    private static Map? _map = null;
 
     public static Map Map
     {

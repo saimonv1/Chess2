@@ -29,7 +29,7 @@ public class GameHub : Hub
         await base.OnConnectedAsync();
     }
 
-    public override async Task OnDisconnectedAsync(Exception ex)
+    public override async Task OnDisconnectedAsync(Exception? ex)
     {
         var connectionId = Context.ConnectionId;
         var player = _game.GetPlayerByConnectionId(connectionId);
