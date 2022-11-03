@@ -14,10 +14,7 @@ public class Game
     private static readonly Game _game = new ();
     private static List<Player> _connectedPlayers { get; set; }
     private static Subject _mapSubject { get; set; }
-    private static EmptyMapFactory _emptyMapFactory = new ();
-    private static PlusMapFactory _plusMapFactory = new ();
-    private static OMapFactory _oMapFactory = new ();
-    private static RandomMapFactory _randomMapFactory = new ();
+    private static MapFactory _mapFactory = new PlusMapFactory();
 
     public static bool IsGameStarting =>
         _connectedPlayers.Count > 1 && _connectedPlayers.All(p => p.IsReady);
@@ -81,20 +78,22 @@ public class Game
 
     public Map GenerateMap()
     {
-        _mapSubject.Map = new PlusMapFactory().GenerateMap(_connectedPlayers);
+        _mapSubject.Map = _mapFactory.GenerateMap(_connectedPlayers);
         return _mapSubject.Map;
     }
 
     public void ChangeMap(MapType type)
     {
-        var newMap = type switch
+        _mapFactory = type switch
         {
-            MapType.Empty => _emptyMapFactory.GenerateMap(_connectedPlayers),
-            MapType.Plus => _plusMapFactory.GenerateMap(_connectedPlayers),
-            MapType.O => _oMapFactory.GenerateMap(_connectedPlayers),
-            MapType.Random => _randomMapFactory.GenerateMap(_connectedPlayers),
+            MapType.Empty => new EmptyMapFactory(),
+            MapType.Plus => new PlusMapFactory(),
+            MapType.O => new OMapFactory(),
+            MapType.Random => new RandomMapFactory(),
+            _ => new EmptyMapFactory()
         };
-        _mapSubject.Map = newMap;
+
+        _mapSubject.Map = _mapFactory.GenerateMap(_connectedPlayers);
     }
     
     public void MoveItem(int oldX, int oldY, int newX, int newY)
