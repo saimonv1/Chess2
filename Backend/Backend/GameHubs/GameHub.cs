@@ -16,7 +16,8 @@ public class GameHub : Hub
 
     private readonly Game _game = Game.GetGameInstance();
     private const string GameGroup = "GAME";
-    private readonly MoveCommand _moveCommand = new MoveCommand();
+    //private readonly MoveCommand _moveCommand = new MoveCommand();
+    private Mover Mover = new Mover();
 
     public GameHub()
     {
@@ -73,7 +74,28 @@ public class GameHub : Hub
 
     public async Task SendMove(int move)
     {
-        var moves = _moveCommand.Execute(move, Context.ConnectionId);
+        int moves = 0;
+
+        switch (move)
+        {
+            case 0:
+                moves = Mover.ExecuteCommand(new MoveUpCommand(), Context.ConnectionId);
+                break;
+            case 1:
+                moves = Mover.ExecuteCommand(new MoveRightCommand(), Context.ConnectionId);
+                break;
+            case 2:
+                moves = Mover.ExecuteCommand(new MoveDownCommand(), Context.ConnectionId);
+                break;
+            case 3:
+                moves = Mover.ExecuteCommand(new MoveLeftCommand(), Context.ConnectionId);
+                break;
+            default:
+                break;
+        }
+
+        //var moves = _moveCommand.Execute(move, Context.ConnectionId);
+
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
         
         if(moves != 0)
@@ -81,8 +103,10 @@ public class GameHub : Hub
             return;
         }
 
-        _game.RefreshMoves();
-        _moveCommand.ClearHistory();
+        Mover.Clear();
+
+        //_game.RefreshMoves();
+        //_moveCommand.ClearHistory();
 
         //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
@@ -97,7 +121,8 @@ public class GameHub : Hub
 
     public async Task Undo()
     {
-        var moves = _moveCommand.Undo(Context.ConnectionId);
+        //var moves = _moveCommand.Undo(Context.ConnectionId);
+        var moves = Mover.UndoCommand(Context.ConnectionId);
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
     }
 
