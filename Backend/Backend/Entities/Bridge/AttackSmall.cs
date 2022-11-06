@@ -1,7 +1,12 @@
 ﻿namespace Backend.Entities.Bridge
 {
-    public class Attack : IAttack
+    public class AttackSmall : IAttack
     {
-        public int AttackBoost { get; set; }
+
+        public Unit AddDamage(Unit unit)
+        {
+            unit.Damage += 15;
+            return unit;
+        }
     }
 }

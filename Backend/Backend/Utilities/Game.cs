@@ -95,6 +95,10 @@ public class Game
     public void MoveItem(int oldX, int oldY, int newX, int newY)
     {
         var newMap = _mapSubject.Map;
+        if(newMap.Tiles[newX, newY].Pickup is not null)
+        {
+            newMap.Tiles[oldX, oldY].Unit = newMap.Tiles[newX, newY].Pickup.OnPickup(newMap.Tiles[oldX, oldY].Unit);
+        }
         (newMap.Tiles[oldX, oldY], newMap.Tiles[newX, newY]) = (newMap.Tiles[newX, newY], newMap.Tiles[oldX, oldY]);
         _mapSubject.Map = newMap;
     }
