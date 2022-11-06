@@ -71,7 +71,8 @@ const Board = (props) => {
       else {
         const power = move / 4;
         const direction = move % 4;
-        power == 1 ? await props.connection.invoke("ShortShooting") : await props.connection.invoke("LongShooting")
+        debugger;
+        power === 1 ? await props.connection.invoke("ShortShooting") : await props.connection.invoke("LongShooting")
         await props.connection.invoke("Shoot", direction);
       }
     } catch (e) {

@@ -4,7 +4,7 @@ using Backend.Entities;
 using Backend.Enums;
 using Backend.Utilities;
 using Backend.Utilities.Command;
-using Backend.Utilities.Strategy;
+using Backend.Utilities.Facade;
 using Microsoft.AspNetCore.SignalR;
 
 #endregion
@@ -14,8 +14,8 @@ namespace Backend.GameHubs;
 public class GameHub : Hub
 {
     public static GameHub Instance { get; private set; }
-
-    private readonly Game _game = Game.GetGameInstance();
+    
+    private readonly BestFacade _facade = new();
 
     private const string GameGroup = "GAME";
 
@@ -36,10 +36,10 @@ public class GameHub : Hub
     public override async Task OnDisconnectedAsync(Exception? ex)
     {
         var connectionId = Context.ConnectionId;
-        var player = _game.GetPlayerByConnectionId(connectionId);
+        var player = _facade.GetPlayer(connectionId);
         if (player is not null)
         {
-            _game.RemovePlayer(player);
+            _facade.RemovePlayer(player);
             await Groups.RemoveFromGroupAsync(connectionId, GameGroup);
             await Clients.Group(GameGroup).SendAsync("PlayerLeave", player);
         }
@@ -51,9 +51,9 @@ public class GameHub : Hub
     public async Task EnterUserName(string name)
     {
         Console.WriteLine("Entered name: " + name);
-        var color = _game.GetFirstAvailableFreeColor();
+        var color = _facade.FreeColor();
         var player = new Player(Context.ConnectionId, name, color, null);
-        switch (_game.AddPlayer(player))
+        switch (_facade.AddPlayer(player))
         {
             case AddPlayerState.PlayerWithNameExists:
                 await Clients.Caller.SendAsync("ConfirmUserName", name,
@@ -70,30 +70,21 @@ public class GameHub : Hub
             default:
                 await Clients.Group(GameGroup).SendAsync("PlayerJoin", player);
                 await Groups.AddToGroupAsync(Context.ConnectionId, GameGroup);
-                await Clients.Caller.SendAsync("ConfirmUserName", _game.GetPlayers(), "", player);
+                await Clients.Caller.SendAsync("ConfirmUserName", _facade.GetPlayers(), "", player);
                 break;
         }
     }
 
     public async Task SendMove(int move)
     {
-        var moves = 0;
-
-        switch (move)
+        var moves = move switch
         {
-            case 0:
-                moves = Mover.ExecuteCommand(new MoveUpCommand(), Context.ConnectionId);
-                break;
-            case 1:
-                moves = Mover.ExecuteCommand(new MoveRightCommand(), Context.ConnectionId);
-                break;
-            case 2:
-                moves = Mover.ExecuteCommand(new MoveDownCommand(), Context.ConnectionId);
-                break;
-            case 3:
-                moves = Mover.ExecuteCommand(new MoveLeftCommand(), Context.ConnectionId);
-                break;
-        }
+            0 => Mover.ExecuteCommand(new MoveUpCommand(), Context.ConnectionId),
+            1 => Mover.ExecuteCommand(new MoveRightCommand(), Context.ConnectionId),
+            2 => Mover.ExecuteCommand(new MoveDownCommand(), Context.ConnectionId),
+            3 => Mover.ExecuteCommand(new MoveLeftCommand(), Context.ConnectionId),
+            _ => 0
+        };
 
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
 
@@ -104,35 +95,31 @@ public class GameHub : Hub
 
         Mover.Clear();
 
-        _game.RefreshMoves();
-        await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+        _facade.ClearMove();
+        await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _facade.NextPlayer());
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
     }
 
     public async Task Shoot(int move)
     {
-        _game.Shoot(Context.ConnectionId, move);
+        _facade.Shoot(Context.ConnectionId, move);
         Mover.Clear();
 
-        _game.RefreshMoves();
-        await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+        _facade.ClearMove();
+        await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _facade.NextPlayer());
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
     }
 
-    public async Task ShortShooting()
-    {
-        _game.ChangeShootingType(Context.ConnectionId, new ShortRangeShootingAlgorithm());
-    }
+    public async Task ShortShooting() => 
+        _facade.ShortShootingAlgorithm(Context.ConnectionId);
 
-    public async Task LongShooting()
-    {
-        _game.ChangeShootingType(Context.ConnectionId, new LongRangeShootingAlgorithm());
-    }
+    public async Task LongShooting() => 
+        _facade.LongShootingAlgorithm(Context.ConnectionId);
 
     public async Task MapChange(MapType type)
     {
-        _game.ChangeMap(type);
-        _game.RefreshMoves();
+        _facade.ChangeMap(type);
+        _facade.ClearMove();
     }
 
     public async Task Undo()
@@ -144,13 +131,13 @@ public class GameHub : Hub
     public async Task ReadyUp()
     {
         var connectionId = Context.ConnectionId;
-        var ready = _game.ChangeReadyStatus(connectionId);
+        var ready = _facade.ChangeReadyStatus(connectionId);
         await Clients.Group(GameGroup).SendAsync("ReadyStatus", connectionId, ready);
         if (Game.IsGameStarting)
         {
             await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
-            await Clients.Group(GameGroup).SendAsync("Map", _game.GenerateMap().Tiles.Invert());
-            await Clients.Group(GameGroup).SendAsync("FirstTurn", _game.NextPlayer());
+            await Clients.Group(GameGroup).SendAsync("Map", _facade.GenerateMap());
+            await Clients.Group(GameGroup).SendAsync("FirstTurn", _facade.NextPlayer());
             await Clients.Group(GameGroup).SendAsync("GameStatus", true);
         }
     }
