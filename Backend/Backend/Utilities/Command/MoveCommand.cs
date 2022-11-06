@@ -141,7 +141,7 @@ namespace Backend.Utilities.Command
             return remainingTurnsAfter;
         }
 
-        public int Undo(string connectionId)
+        public int UndoCommand(string connectionId)
         {
             var unit = game.GetPlayerByConnectionId(connectionId)!.Units.First();
 
