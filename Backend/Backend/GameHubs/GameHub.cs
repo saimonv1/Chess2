@@ -105,7 +105,7 @@ public class GameHub : Hub
 
         Mover.Clear();
 
-        //_game.RefreshMoves();
+        _game.RefreshMoves();
         //_moveCommand.ClearHistory();
 
         //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);

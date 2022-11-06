@@ -98,6 +98,7 @@ public class Game
         if(newMap.Tiles[newX, newY].Pickup is not null)
         {
             newMap.Tiles[oldX, oldY].Unit = newMap.Tiles[newX, newY].Pickup.OnPickup(newMap.Tiles[oldX, oldY].Unit);
+            newMap.Tiles[newX, newY].Pickup = null;
         }
         (newMap.Tiles[oldX, oldY], newMap.Tiles[newX, newY]) = (newMap.Tiles[newX, newY], newMap.Tiles[oldX, oldY]);
         _mapSubject.Map = newMap;
