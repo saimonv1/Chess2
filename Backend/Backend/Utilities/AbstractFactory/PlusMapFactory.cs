@@ -43,6 +43,14 @@ public class PlusMapFactory : MapFactory
             map.Tiles[unit.PosX, unit.PosY].Unit = unit;
         }
 
+        ///PICKUPS
+        /// x - 7, y - 1 2 3 4
+        map.Tiles[1, 7].Pickup = new Entities.Bridge.Pickup(new Entities.Bridge.HealSmall(), null);
+        map.Tiles[2, 7].Pickup = new Entities.Bridge.Pickup(new Entities.Bridge.HealBig(), null);
+        map.Tiles[3, 7].Pickup = new Entities.Bridge.Pickup(null, new Entities.Bridge.AttackSmall());
+        map.Tiles[4, 7].Pickup = new Entities.Bridge.Pickup(null, new Entities.Bridge.AttackBig());
+        ///
+
         return map;
     }
 }

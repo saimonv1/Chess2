@@ -122,7 +122,7 @@ const Board = (props) => {
             return (
               <div key={`Row: ${rowId}`} className={classes.row}>
                 {row.map((node, nodeId) => {
-                  return <Tile key={`Node: ${rowId} ${nodeId}`} row={rowId} node={nodeId} obstacle={node.isObstacle} unit={node.unit}/>;
+                  return <Tile key={`Node: ${rowId} ${nodeId}`} row={rowId} node={nodeId} obstacle={node.isObstacle} unit={node.unit} pickup={node.pickup}/>;
                 })}
               </div>
             );

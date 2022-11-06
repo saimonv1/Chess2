@@ -4,10 +4,10 @@ const GameContext = React.createContext({
     players: [],
     gameStatus: false,
     map: [],
+    movesLeft: 0,
 
     name: '',
     color: -1,
-    movesLeft: 0,
     currentUnit: 0,
     isReady: false,
     isMyTurn: false,

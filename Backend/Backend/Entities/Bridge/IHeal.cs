@@ -2,6 +2,6 @@
 {
     public interface IHeal
     {
-        public int Health { get; set; }
+        public Unit AddHealth(Unit unit);
     }
 }

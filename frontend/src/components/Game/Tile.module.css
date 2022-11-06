@@ -33,6 +33,12 @@
 }
 
 
+.tile.pickup {
+    background-image: url(../../assets/sprites/Pickups/health.png);
+    background-size: 2rem 2rem;
+}
+
+
 
 .tile.redwreck {
     background-image: url(../../assets/sprites/Red/wreckRed.png);
