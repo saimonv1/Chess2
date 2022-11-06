@@ -1,4 +1,5 @@
 ﻿using Backend.Enums;
+using Backend.Utilities.Strategy;
 
 namespace Backend.Entities;
 
@@ -14,6 +15,7 @@ public class Tank : Unit
         MovesPerTurn = 3;
         RemainingTurns = MovesPerTurn;
         Color = teamColor;
+        MoveAlgorithm = new TankMoveAlgorithm();
         PosX = posX;
         PosY = posY;
         Label = "Tank";

@@ -1,6 +1,7 @@
 ﻿#region
 
 using Backend.Enums;
+using Backend.Utilities.Strategy;
 
 #endregion
 
@@ -18,5 +19,6 @@ public abstract class Unit
     public virtual int PosX { get; set; }
     public virtual int PosY { get; set; }
     public virtual string Label { get; set; }
+    public virtual MoveAlgorithm MoveAlgorithm { get; set; }
     public abstract string GetLabel();
 }

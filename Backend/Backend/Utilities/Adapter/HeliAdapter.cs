@@ -1,4 +1,5 @@
 ﻿using Backend.Entities;
+using Backend.Utilities.Strategy;
 
 namespace Backend.Utilities.Adapter
 {
@@ -21,6 +22,7 @@ namespace Backend.Utilities.Adapter
             this.IsAerial = true;
             this.MaxHealth = 2;
             this.Label = "Heli";
+            this.MoveAlgorithm = new HeliMoveAlgorithm();
 
         }
 

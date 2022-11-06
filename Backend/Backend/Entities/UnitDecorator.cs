@@ -1,4 +1,5 @@
 ﻿using Backend.Enums;
+using Backend.Utilities.Strategy;
 
 namespace Backend.Entities
 {
@@ -18,6 +19,7 @@ namespace Backend.Entities
         public override Color Color { get => _unit.Color; set => _unit.Color = value; }
         public override int PosX { get => _unit.PosX; set => _unit.PosX = value; }
         public override int PosY { get => _unit.PosY; set => _unit.PosY = value; }
+        public override MoveAlgorithm MoveAlgorithm { get => _unit.MoveAlgorithm; set => _unit.MoveAlgorithm = value; }
         public override string Label { get => _unit.Label; set => _unit.Label = value; }
         public override string GetLabel()
         {

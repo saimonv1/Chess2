@@ -1,4 +1,6 @@
-﻿namespace Backend.Entities.TankBuilder;
+﻿using Backend.Utilities.Strategy;
+
+namespace Backend.Entities.TankBuilder;
 
 public class TankBuilder : Builder
 {
@@ -11,6 +13,7 @@ public class TankBuilder : Builder
         Unit.MovesPerTurn = 3;
         Unit.IsAerial = false;
         Unit.RemainingTurns = Unit.MovesPerTurn;
+        Unit.MoveAlgorithm = new TankMoveAlgorithm();
         Unit.Label = "Tank";
         return this;
     }
