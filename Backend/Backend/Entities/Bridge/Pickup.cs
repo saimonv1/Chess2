@@ -2,9 +2,9 @@
 
 public class Pickup
 {
-    private IHeal _healing;
+    private IAttack _healing;
     private IAttack _attack;
-    public Pickup(IHeal healing, IAttack attacking)
+    public Pickup(IAttack healing, IAttack attacking)
     {
         this._healing = healing;
         this._attack = attacking;

@@ -1,7 +1,7 @@
 ﻿namespace Backend.Entities.Bridge
 {
-    public interface IHeal
+    public interface IAttack
     {
-        public int Health { get; set; }
+        public Unit AddHealth(Unit unit);
     }
 }
