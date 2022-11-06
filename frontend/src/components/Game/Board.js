@@ -47,13 +47,33 @@ const Board = (props) => {
       case "sleft":
         move = 7;
         break;
+      case "slup":
+        move = 8;
+        break;
+      case "slright":
+        move = 9;
+        break;
+      case "sldown":
+        move = 10;
+        break;
+      case "slleft":
+        move = 11;
+        break;
       default:
         move = -1;
         break;
     }
     console.log(move);
     try {
-      await props.connection.invoke("SendMove", move);
+      if(move < 4) {
+        await props.connection.invoke("SendMove", move);
+      }
+      else {
+        const power = move / 4;
+        const direction = move % 4;
+        power == 1 ? await props.connection.invoke("ShortShooting") : await props.connection.invoke("LongShooting")
+        await props.connection.invoke("Shoot", direction);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -92,10 +112,14 @@ const Board = (props) => {
             <option value="left">Move Left (Cost: 1)</option>
             <option value="right">Move Right (Cost: 1)</option>
             <option value="down">Move Down (Cost: 1)</option>
-            <option value="sup">Shoot Up (Cost: end)</option>
-            <option value="sleft">Shoot Left (Cost: end)</option>
-            <option value="sright">Shoot Right (Cost: end)</option>
-            <option value="sdown">Shoot Down (Cost: end)</option>
+            <option value="sup">Shoot Up. Range: Short, Damage: 2 (Cost: end)</option>
+            <option value="sleft">Shoot Left. Range: Short, Damage: 2 (Cost: end)</option>
+            <option value="sright">Shoot Right. Range: Short, Damage: 2 (Cost: end)</option>
+            <option value="sdown">Shoot Down. Range: Short, Damage: 2 (Cost: end)</option>
+            <option value="slup">Shoot Up. Range: Long, Damage: 1 (Cost: end)</option>
+            <option value="slleft">Shoot Left. Range: Long, Damage: 1 (Cost: end)</option>
+            <option value="slright">Shoot Right. Range: Long, Damage: 1 (Cost: end)</option>
+            <option value="sldown">Shoot Down. Range: Long, Damage: 1 (Cost: end)</option>
           </select>
           <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
         </form>

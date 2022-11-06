@@ -24,9 +24,4 @@ public class EmptyMapFactory : MapFactory
 
         return map;
     }
-
-    internal Map GenerateMap()
-    {
-        throw new NotImplementedException();
-    }
 }

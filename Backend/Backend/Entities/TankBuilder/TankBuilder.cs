@@ -1,10 +1,10 @@
-﻿using Backend.Utilities.Strategy;
-
-namespace Backend.Entities.TankBuilder;
+﻿namespace Backend.Entities.TankBuilder;
 
 public class TankBuilder : Builder
 {
-    public TankBuilder(Unit unit) : base(unit) { }
+    public TankBuilder(Unit unit) : base(unit)
+    {
+    }
 
     public override Builder AddMainBody()
     {
@@ -13,7 +13,6 @@ public class TankBuilder : Builder
         Unit.MovesPerTurn = 3;
         Unit.IsAerial = false;
         Unit.RemainingTurns = Unit.MovesPerTurn;
-        Unit.MoveAlgorithm = new TankMoveAlgorithm();
         Unit.Label = "Tank";
         return this;
     }

@@ -1,11 +1,17 @@
-﻿using Backend.Enums;
-using Backend.Utilities.Strategy;
+﻿#region
+
+using Backend.Enums;
+
+#endregion
 
 namespace Backend.Entities;
 
 public class Tank : Unit
 {
-    public Tank() {}
+    public Tank()
+    {
+    }
+
     public Tank(Color teamColor, int posX, int posY)
     {
         CurrentHealth = 2;
@@ -15,7 +21,6 @@ public class Tank : Unit
         MovesPerTurn = 3;
         RemainingTurns = MovesPerTurn;
         Color = teamColor;
-        MoveAlgorithm = new TankMoveAlgorithm();
         PosX = posX;
         PosY = posY;
         Label = "Tank";

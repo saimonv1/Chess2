@@ -1,34 +1,34 @@
-﻿using Backend.Entities;
-using Backend.Utilities.Strategy;
+﻿#region
 
-namespace Backend.Utilities.Adapter
+using Backend.Entities;
+
+#endregion
+
+namespace Backend.Utilities.Adapter;
+
+public class HeliAdapter : Heli
 {
-    public class HeliAdapter : Heli
+    private readonly Copter _helicopter;
+
+    public HeliAdapter(Copter newHeli)
     {
-        private Copter _helicopter;
+        _helicopter = newHeli;
 
-        public HeliAdapter(Copter newHeli)
-        {
-            _helicopter = newHeli;
+        CurrentHealth = _helicopter.CurrentHealth;
+        MovesPerTurn = _helicopter.MovesPerTurn;
+        RemainingTurns = _helicopter.RemainingTurns;
+        Damage = _helicopter.Damage;
+        Color = _helicopter.Color;
+        PosX = _helicopter.PosX;
+        PosY = _helicopter.PosY;
 
-            this.CurrentHealth = _helicopter.CurrentHealth;
-            this.MovesPerTurn = _helicopter.MovesPerTurn;
-            this.RemainingTurns = _helicopter.RemainingTurns;
-            this.Damage = _helicopter.Damage;
-            this.Color = _helicopter.Color;
-            this.PosX = _helicopter.PosX;
-            this.PosY = _helicopter.PosY;
+        IsAerial = true;
+        MaxHealth = 2;
+        Label = "Heli";
+    }
 
-            this.IsAerial = true;
-            this.MaxHealth = 2;
-            this.Label = "Heli";
-            this.MoveAlgorithm = new HeliMoveAlgorithm();
-
-        }
-
-        public override string GetLabel()
-        {
-            return this.Label;
-        }
+    public override string GetLabel()
+    {
+        return Label;
     }
 }

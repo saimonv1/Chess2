@@ -4,6 +4,7 @@ using Backend.Entities;
 using Backend.Enums;
 using Backend.Utilities;
 using Backend.Utilities.Command;
+using Backend.Utilities.Strategy;
 using Microsoft.AspNetCore.SignalR;
 
 #endregion
@@ -15,9 +16,11 @@ public class GameHub : Hub
     public static GameHub Instance { get; private set; }
 
     private readonly Game _game = Game.GetGameInstance();
+
     private const string GameGroup = "GAME";
+
     //private readonly MoveCommand _moveCommand = new MoveCommand();
-    private Mover Mover = new Mover();
+    private readonly Mover Mover = new();
 
     public GameHub()
     {
@@ -74,7 +77,7 @@ public class GameHub : Hub
 
     public async Task SendMove(int move)
     {
-        int moves = 0;
+        var moves = 0;
 
         switch (move)
         {
@@ -90,15 +93,11 @@ public class GameHub : Hub
             case 3:
                 moves = Mover.ExecuteCommand(new MoveLeftCommand(), Context.ConnectionId);
                 break;
-            default:
-                break;
         }
 
-        //var moves = _moveCommand.Execute(move, Context.ConnectionId);
-
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
-        
-        if(moves != 0)
+
+        if (moves != 0)
         {
             return;
         }
@@ -106,11 +105,28 @@ public class GameHub : Hub
         Mover.Clear();
 
         _game.RefreshMoves();
-        //_moveCommand.ClearHistory();
-
-        //await Clients.Group(GameGroup).SendAsync("MoveItem", oldY, oldX, newY, newX);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
+    }
+
+    public async Task Shoot(int move)
+    {
+        _game.Shoot(Context.ConnectionId, move);
+        Mover.Clear();
+
+        _game.RefreshMoves();
+        await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _game.NextPlayer());
+        await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
+    }
+
+    public async Task ShortShooting()
+    {
+        _game.ChangeShootingType(Context.ConnectionId, new ShortRangeShootingAlgorithm());
+    }
+
+    public async Task LongShooting()
+    {
+        _game.ChangeShootingType(Context.ConnectionId, new LongRangeShootingAlgorithm());
     }
 
     public async Task MapChange(MapType type)
@@ -121,7 +137,6 @@ public class GameHub : Hub
 
     public async Task Undo()
     {
-        //var moves = _moveCommand.Undo(Context.ConnectionId);
         var moves = Mover.UndoCommand(Context.ConnectionId);
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
     }
