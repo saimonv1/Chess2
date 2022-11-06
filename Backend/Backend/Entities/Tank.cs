@@ -1,10 +1,17 @@
-﻿using Backend.Enums;
+﻿#region
+
+using Backend.Enums;
+
+#endregion
 
 namespace Backend.Entities;
 
 public class Tank : Unit
 {
-    public Tank() {}
+    public Tank()
+    {
+    }
+
     public Tank(Color teamColor, int posX, int posY)
     {
         CurrentHealth = 2;

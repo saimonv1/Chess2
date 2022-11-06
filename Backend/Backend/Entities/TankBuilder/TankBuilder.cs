@@ -2,7 +2,9 @@
 
 public class TankBuilder : Builder
 {
-    public TankBuilder(Unit unit) : base(unit) { }
+    public TankBuilder(Unit unit) : base(unit)
+    {
+    }
 
     public override Builder AddMainBody()
     {
