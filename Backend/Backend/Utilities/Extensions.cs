@@ -16,5 +16,26 @@ public static class Extensions
         }
 
         return inverted;
-    } 
+    }
+    public static int PickupsCount(this Map map)
+    {
+        int count = 0;
+        var iterator = map.getIterator();
+        var first = iterator.First();
+        if(first.Pickup != null)
+        {
+            count++;
+        }
+        while (!iterator.IsDone())
+        {
+            var item = iterator.Current();
+
+            if(item.Pickup != null)
+            {
+                count++;
+            }
+            iterator.Next();
+        }
+        return count;
+    }
 }

@@ -84,6 +84,10 @@ function App() {
         gameCtx.setMovesLeft(newMoves);
       });
 
+      connection.on("PickupsUpdate", (newPickups) => {
+        gameCtx.setPickupsLeft(newPickups);
+      });
+
       await connection
         .start()
         .then(() => {

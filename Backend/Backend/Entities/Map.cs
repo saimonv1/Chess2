@@ -1,8 +1,15 @@
-﻿namespace Backend.Entities;
+﻿using Backend.Entities.Iterator;
+
+namespace Backend.Entities;
 
 public class Map : ICloneable
 {
     public Tile[,] Tiles { get; set; }
+
+    public TileIterator getIterator()
+    {
+        return new TileIterator(this.Tiles);
+    }
 
     public object Clone()
     {

@@ -176,6 +176,8 @@ const Board = (props) => {
             </div>
           );
         })}
+        <h1>Pickups</h1>
+        <p><b>Pickups left:</b> {gameCtx.pickupsLeft}</p>
       </div>
     </div>
   );

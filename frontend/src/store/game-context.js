@@ -5,6 +5,7 @@ const GameContext = React.createContext({
     gameStatus: false,
     map: [],
     movesLeft: 0,
+    pickupsLeft: 0,
 
     name: '',
     color: -1,
@@ -28,6 +29,7 @@ const GameContext = React.createContext({
     gameMove: (fromX, fromY, toX, toY) => {},
 
     setMovesLeft: (moves) => {},
+    setPickupsLeft: (pickups) => {},
     changeCurrentUnit: (unit) => {},
 });
 

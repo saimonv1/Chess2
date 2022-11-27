@@ -7,6 +7,7 @@ const defaultGameState = {
   gameStatus: false,
   map: [],
   movesLeft: 0,
+  pickupsLeft: 0,
 
   name: "",
   color: -1,
@@ -95,6 +96,10 @@ const gameReducer = (state, action) => {
     return { ...state, movesLeft: action.item };
   }
 
+  if (action.type === "PICKUPS_LEFT") {
+    return { ...state, pickupsLeft: action.item };
+  }
+
   if (action.type === "CURRENT_UNIT") {
     return { ...state, currentUnit: action.item };
   }
@@ -158,14 +163,21 @@ const GameProvider = (props) => {
     dispatchGameAction({
       type: "MOVES_LEFT",
       item: moves,
-    })
+    });
+  };
+
+  const setPickupsLeftHandler = (pickups) => {
+    dispatchGameAction({
+      type: "PICKUPS_LEFT",
+      item: pickups,
+    });
   };
 
   const changeCurrentUnitHandler = (unit) => {
     dispatchGameAction({
       type: "CURRENT_UNIT",
       item: unit,
-    })
+    });
   };
 
   const gameContext = {
@@ -173,6 +185,7 @@ const GameProvider = (props) => {
     gameStatus: gameState.gameStatus,
     map: gameState.map,
     movesLeft: gameState.movesLeft,
+    pickupsLeft: gameState.pickupsLeft,
 
     name: gameState.name,
     color: gameState.color,
@@ -193,6 +206,7 @@ const GameProvider = (props) => {
     insertMap: insertMapHandler,
     gameMove: gameMoveHandler,
     setMovesLeft: setMovesLeftHandler,
+    setPickupsLeft: setPickupsLeftHandler,
     changeCurrentUnit: changeCurrentUnitHandler,
   };
 
