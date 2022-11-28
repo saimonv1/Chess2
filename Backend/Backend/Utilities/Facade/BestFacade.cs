@@ -40,6 +40,9 @@ public class BestFacade
     public Tile[,] GenerateMap() =>
         _game.GenerateMap().Tiles.Invert();
 
+    public Map GetMap() =>
+        _game.GetMap();
+
     public bool ChangeReadyStatus(string connectionId) =>
         _game.ChangeReadyStatus(connectionId);
 
