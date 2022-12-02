@@ -3,7 +3,7 @@ namespace Backend.Entities;
 
 public class Tile : ICloneable
 {
-    public bool IsObstacle { get; set; } = false;
+    public bool IsObstacle { get; private set; } = false;
 
     protected Tile()
     {
