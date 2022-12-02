@@ -1,6 +1,7 @@
 #region
 
 using Backend.Entities;
+using Backend.Flyweight;
 
 #endregion
 
@@ -32,11 +33,13 @@ public static class MapPrototype
             {
                 for (var j = 0; j < size_y; j++)
                 {
-                    map.Tiles[i, j] = new Tile();
-
                     if (i == 0 || i == size_x - 1 || j == 0 || j == size_y - 1)
                     {
-                        map.Tiles[i, j].IsObstacle = true;
+                        map.Tiles[i, j] = TileFlyweight.obstacleTile;
+                    }
+                    else
+                    {
+                        map.Tiles[i, j] = TileFlyweight.emptyTile;
                     }
                 }
             }

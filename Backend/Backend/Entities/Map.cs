@@ -37,10 +37,6 @@ public class Map : ICloneable
                 {
                     mapString += "X";
                 }
-                else if(tile.Unit is not null)
-                {
-                    mapString += "O";
-                }
                 else
                 {
                     mapString += " ";

@@ -4,6 +4,7 @@ using Backend.Entities;
 using Backend.Enums;
 using Backend.Utilities.AbstractFactory;
 using Backend.Utilities.Strategy;
+using Backend.Flyweight;
 
 #endregion
 
@@ -108,10 +109,14 @@ public class Game
     public void MoveItem(int oldX, int oldY, int newX, int newY)
     {
         var newMap = _mapSubject.Map;
-        if (newMap.Tiles[newX, newY].Pickup is not null)
+
+        var pickup = newMap.Tiles[newX, newY] as TilePickup;
+        var unit = newMap.Tiles[oldX, oldY] as TileUnit;
+
+        if (pickup is not null && unit is not null)
         {
-            newMap.Tiles[oldX, oldY].Unit = newMap.Tiles[newX, newY].Pickup.OnPickup(newMap.Tiles[oldX, oldY].Unit);
-            newMap.Tiles[newX, newY].Pickup = null;
+            newMap.Tiles[oldX, oldY] = new TileUnit(pickup.Pickup.OnPickup(unit.Unit));
+            newMap.Tiles[newX, newY] = TileFlyweight.emptyTile;
         }
 
         (newMap.Tiles[oldX, oldY], newMap.Tiles[newX, newY]) = (newMap.Tiles[newX, newY], newMap.Tiles[oldX, oldY]);
@@ -159,14 +164,15 @@ public class Game
                     continue;
                 }
 
-                var enemy = map.Tiles[i, j].Unit;
+                var enemy = map.Tiles[i, j] as TileUnit;
+
                 if (enemy is not null)
                 {
-                    enemy.CurrentHealth -= shot.Damage;
-                    if (enemy.CurrentHealth <= 0)
+                    enemy.Unit.CurrentHealth -= shot.Damage;
+                    if (enemy.Unit.CurrentHealth <= 0)
                     {
-                        map.Tiles[i, j].Unit = null;
-                        _connectedPlayers.First(x => x.Units.Contains(enemy)).Units.Remove(enemy);
+                        map.Tiles[i, j] = TileFlyweight.emptyTile;
+                        _connectedPlayers.First(x => x.Units.Contains(enemy.Unit)).Units.Remove(enemy.Unit);
                         _mapSubject.Map = map;
                     }
                 }
