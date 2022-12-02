@@ -2,6 +2,7 @@
 
 using Backend.Entities;
 using Backend.Enums;
+using Backend.Flyweight;
 
 #endregion
 
@@ -24,7 +25,7 @@ public class OMapFactory : MapFactory
             {
                 if (i > no_obstacle_border_size && i < (size_x - 1 - no_obstacle_border_size) && j > no_obstacle_border_size && j < (size_y - 1 - no_obstacle_border_size))
                 {
-                    map.Tiles[i, j].IsObstacle = true;
+                    map.Tiles[i, j] = TileFlyweight.obstacleTile;
                 }
             }
         }
@@ -35,7 +36,7 @@ public class OMapFactory : MapFactory
             player.Units = _creator.GetUnits(teamColor, MapType.Plus);
             var unit = player.Units.First();
 
-            map.Tiles[unit.PosX, unit.PosY].Unit = unit;
+            map.Tiles[unit.PosX, unit.PosY] = new TileUnit(unit);
         }
 
         return map;

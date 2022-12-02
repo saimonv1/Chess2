@@ -19,7 +19,7 @@ public class EmptyMapFactory : MapFactory
             player.Units = _creator.GetUnits(teamColor, MapType.Empty);
             var unit = player.Units.First();
 
-            map.Tiles[unit.PosX, unit.PosY].Unit = unit;
+            map.Tiles[unit.PosX, unit.PosY] = new TileUnit(unit);
         }
 
         return map;

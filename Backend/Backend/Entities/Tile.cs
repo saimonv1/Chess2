@@ -1,18 +1,22 @@
-﻿namespace Backend.Entities;
-using Backend.Entities.Bridge;
+﻿using Backend.Flyweight;
+namespace Backend.Entities;
 
 public class Tile : ICloneable
 {
     public bool IsObstacle { get; set; } = false;
-    public Pickup? Pickup { get; set; } = null;
-    public Unit? Unit { get; set; } = null;
+
+    protected Tile()
+    {
+
+    }
+
+    public Tile(bool obstacle)
+    {
+        IsObstacle = obstacle;
+    }
 
     public object Clone()
     {
-        var tile = new Tile();
-        tile.IsObstacle = this.IsObstacle;
-        tile.Pickup = this.Pickup;
-        tile.Unit = this.Unit;
-        return tile;
+        return IsObstacle ? TileFlyweight.obstacleTile : TileFlyweight.emptyTile;
     }
 }

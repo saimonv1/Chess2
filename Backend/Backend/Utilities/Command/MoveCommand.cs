@@ -9,7 +9,7 @@ namespace Backend.Utilities.Command
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX + 1, oldY);
 
-            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY].Unit is not null)
+            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
             game.MoveItem(oldX, oldY, newX, newY);
@@ -37,7 +37,7 @@ namespace Backend.Utilities.Command
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX - 1, oldY);
 
-            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY].Unit is not null)
+            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
             game.MoveItem(oldX, oldY, newX, newY);
@@ -65,7 +65,7 @@ namespace Backend.Utilities.Command
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX, oldY - 1);
 
-            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY].Unit is not null)
+            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
             game.MoveItem(oldX, oldY, newX, newY);
@@ -93,7 +93,7 @@ namespace Backend.Utilities.Command
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX, oldY + 1);
 
-            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY].Unit is not null)
+            if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
             game.MoveItem(oldX, oldY, newX, newY);

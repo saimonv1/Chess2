@@ -22,7 +22,7 @@ public static class Extensions
         int count = 0;
         var iterator = map.getIterator();
         var first = iterator.First();
-        if(first.Pickup != null)
+        if(first as TilePickup is not null)
         {
             count++;
         }
@@ -30,7 +30,7 @@ public static class Extensions
         {
             var item = iterator.Current();
 
-            if(item.Pickup != null)
+            if(item as TilePickup is not null)
             {
                 count++;
             }
