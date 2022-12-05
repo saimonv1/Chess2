@@ -34,7 +34,7 @@ public class Game
 
     public string NextPlayer()
     {
-        var playersWithTurns = _connectedPlayers.Where(x => x.Units.Count > 0).ToList();
+        var playersWithTurns = _connectedPlayers.Where(x => x.Units.Count > 0 && x.Units.Any(x => x.CurrentHealth > 0)).ToList();
         var playerTurn = playersWithTurns.Find(x => x.ConnectionID == CurrentPlayer);
         if (playerTurn is null)
         {
@@ -164,17 +164,15 @@ public class Game
                     continue;
                 }
 
-                var enemy = map.Tiles[i, j] as TileUnit;
-
-                if (enemy is not null)
+                if (map.Tiles[i, j] is TileUnit enemy)
                 {
-                    enemy.Unit.CurrentHealth -= shot.Damage;
-                    if (enemy.Unit.CurrentHealth <= 0)
-                    {
-                        map.Tiles[i, j] = TileFlyweight.emptyTile;
-                        _connectedPlayers.First(x => x.Units.Contains(enemy.Unit)).Units.Remove(enemy.Unit);
-                        _mapSubject.Map = map;
-                    }
+                    enemy.Unit.TakeDamage(shot);
+                    _mapSubject.Map = map;
+                    // if (enemy.Unit.CurrentHealth <= 0)
+                    // {
+                    //     map.Tiles[i, j] = TileFlyweight.emptyTile;
+                    //     _mapSubject.Map = map;
+                    // }
                 }
             }
         }
@@ -184,7 +182,7 @@ public class Game
     {
         foreach (var player in _connectedPlayers)
         {
-            foreach (var unit in player.Units)
+            foreach (var unit in player.Units.Where(x => !x.IsDestroyed))
             {
                 unit.RemainingTurns = unit.MovesPerTurn;
             }

@@ -27,20 +27,45 @@ const Tile = (props) => {
     
     let unitClass = '';
     if(props.unit) {
+        debugger;
         if(props.unit.color === 0){
-            unitClass = classes.redtank;
+            if(props.unit.isDestroyed){
+                debugger;
+                unitClass = classes.redwreck;
+            }
+            else {
+                unitClass = classes.redtank;
+            }
         }
     
         if(props.unit.color === 2){
-            unitClass = classes.greentank;
+            if(props.unit.isDestroyed){
+                debugger;
+                unitClass = classes.greenwreck;
+            }
+            else {
+                unitClass = classes.greentank;
+            }
         }
     
         if(props.unit.color === 1){
-            unitClass = classes.bluetank;
+            if(props.unit.isDestroyed){
+                debugger;
+                unitClass = classes.bluewreck;
+            }
+            else {
+                unitClass = classes.bluetank;
+            }
         }
     
         if(props.unit.color === 3){
-            unitClass = classes.yellowtank;
+            if(props.unit.isDestroyed){
+                debugger;
+                unitClass = classes.yellowwreck;
+            }
+            else {
+                unitClass = classes.yellowtank;
+            }
         }
     }
 

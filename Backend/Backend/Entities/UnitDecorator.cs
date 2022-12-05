@@ -50,6 +50,12 @@ public class UnitDecorator : Unit
         get => _unit.IsAerial;
         set => _unit.IsAerial = value;
     }
+    
+    public override bool IsDestroyed
+    {
+        get => _unit.IsDestroyed;
+        set => _unit.IsDestroyed = value;
+    }
 
     public override Color Color
     {
