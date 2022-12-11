@@ -4,6 +4,6 @@ namespace Backend.Utilities.Interpreter;
 
 public abstract class InterpretedCommand
 {
-    public SelectedUnit unit;
+    public SelectedUnit? unit;
     public Direction direction;
 }
