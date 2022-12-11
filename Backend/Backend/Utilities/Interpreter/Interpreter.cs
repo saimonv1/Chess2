@@ -10,25 +10,38 @@ public static class Interpreter
     {
         string[] tokens = text.Split(' ');
 
-        var unit = InterpretUnit(tokens[0]);
+        return InterpretTokens(tokens, false);
+    }
 
-        var currentIndex = 0;
-
-        if (unit is not null)
+    private static InterpretedCommand? InterpretTokens(string[] tokens, bool wasUnitParsedYet)
+    {
+        if (!wasUnitParsedYet)
         {
-            currentIndex = 1;
+            var unit = InterpretUnit(tokens[0]);
+
+            if (unit is not null)
+            {
+                var command = InterpretTokens(tokens.Skip(1).ToArray(), true);
+
+                if (command is not null)
+                {
+                    command.unit = unit;
+                }
+
+                return command;
+            }
+
+            return InterpretTokens(tokens, true);
         }
 
-        var action = InterpretAction(tokens[currentIndex]);
-        currentIndex++;
+        var action = InterpretAction(tokens[0]);
 
         if (action is null)
         {
             return null;
         }
 
-        var nullDirection = InterpretDirection(tokens[currentIndex]);
-        currentIndex++;
+        var nullDirection = InterpretDirection(tokens[1]);
 
         if (nullDirection is null)
         {
@@ -40,7 +53,7 @@ public static class Interpreter
         switch (action)
         {
             case Enums.Action.Shoot:
-                var nullLength = InterpretLength(tokens[currentIndex]);
+                var nullLength = InterpretLength(tokens[2]);
 
                 if (nullLength is null)
                 {
@@ -49,10 +62,10 @@ public static class Interpreter
 
                 var length = nullLength.Value;
 
-                return new InterpretedShootCommand(unit, direction, length);
+                return new InterpretedShootCommand(null, direction, length);
 
             case Enums.Action.Move:
-                var nullAmount = ParseNumber(tokens[currentIndex]);
+                var nullAmount = ParseNumber(tokens[2]);
 
                 if (nullAmount is null)
                 {
@@ -61,11 +74,12 @@ public static class Interpreter
 
                 var amount = nullAmount.Value;
 
-                return new InterpretedMoveCommand(unit, direction, amount);
+                return new InterpretedMoveCommand(null, direction, amount);
 
             default:
                 return null;
         }
+
     }
 
     private static SelectedUnit? InterpretUnit(string token)
