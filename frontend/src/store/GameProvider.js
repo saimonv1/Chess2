@@ -104,6 +104,10 @@ const gameReducer = (state, action) => {
     return { ...state, currentUnit: action.item };
   }
 
+  if (action.type === "WRONG_COMMAND") {
+    return { ...state, isInvalidCommand: action.state };
+  }
+
   return defaultGameState;
 };
 
@@ -180,6 +184,13 @@ const GameProvider = (props) => {
     });
   };
 
+  const changeInvalidCommandHandler = (state) => {
+    dispatchGameAction({
+      type: "WRONG_COMMAND",
+      state: state,
+    });
+  };
+
   const gameContext = {
     players: gameState.players,
     gameStatus: gameState.gameStatus,
@@ -192,6 +203,8 @@ const GameProvider = (props) => {
     currentUnit: gameState.currentUnit,
     isReady: gameState.isReady,
     isMyTurn: gameState.isMyTurn,
+
+    isInvalidCommand: gameState.isInvalidCommand,
 
     addPlayer: addPlayerHandler,
     removePlayer: removePlayerHandler,
@@ -208,6 +221,7 @@ const GameProvider = (props) => {
     setMovesLeft: setMovesLeftHandler,
     setPickupsLeft: setPickupsLeftHandler,
     changeCurrentUnit: changeCurrentUnitHandler,
+    changeInvalidCommand: changeInvalidCommandHandler,
   };
 
   return (

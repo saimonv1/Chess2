@@ -88,6 +88,10 @@ function App() {
         gameCtx.setPickupsLeft(newPickups);
       });
 
+      connection.on("InvalidCommand", (state) => {
+        gameCtx.changeInvalidCommand(state);
+      });
+
       await connection
         .start()
         .then(() => {

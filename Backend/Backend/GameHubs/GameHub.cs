@@ -148,6 +148,7 @@ public class GameHub : Hub
             await Clients.Group(GameGroup).SendAsync("FirstTurn", _facade.NextPlayer());
             await Clients.Group(GameGroup).SendAsync("GameStatus", true);
             await Clients.Group(GameGroup).SendAsync("PickupsUpdate", _facade.GetMap().PickupsCount());
+            await Clients.Group(GameGroup).SendAsync("InvalidCommand", false);
         }
     }
 
