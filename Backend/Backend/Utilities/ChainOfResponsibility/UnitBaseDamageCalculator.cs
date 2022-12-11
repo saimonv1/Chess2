@@ -11,7 +11,7 @@ public class UnitBaseDamageCalculator : DamageCalculator
 {
     public override int CalculateDamage(Unit unit)
     {
-        DamageSum += unit.State switch
+        DamageSum = unit.State switch
         {
             FullyHealedState => unit.Damage,
             DamagedState => unit.Damage / 2,

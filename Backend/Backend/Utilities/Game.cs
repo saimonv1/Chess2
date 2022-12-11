@@ -178,15 +178,12 @@ public class Game
         }
     }
 
-    public void RefreshMoves()
+    public void RefreshMoves(string connectionId)
     {
-        foreach (var player in _connectedPlayers)
-        {
-            foreach (var unit in player.Units.Where(x => !x.IsDestroyed))
-            {
-                unit.RemainingTurns = unit.MovesPerTurn;
-            }
-        }
+        var unit = _connectedPlayers.First(x => x.ConnectionID == connectionId).Units.First();
+        unit.RemainingTurns = unit.MovesPerTurn;
+        unit.PowerupObject.RemoveTurn();
+        unit.PowerupObject.RemoveExpiredPickups();
     }
 
     public Map GetMap()

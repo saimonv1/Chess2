@@ -95,7 +95,7 @@ public class GameHub : Hub
 
         Mover.Clear();
 
-        _facade.ClearMove();
+        _facade.ClearMove(Context.ConnectionId);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _facade.NextPlayer());
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
     }
@@ -105,7 +105,7 @@ public class GameHub : Hub
         _facade.Shoot(Context.ConnectionId, move);
         Mover.Clear();
 
-        _facade.ClearMove();
+        _facade.ClearMove(Context.ConnectionId);
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _facade.NextPlayer());
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
     }
@@ -119,7 +119,7 @@ public class GameHub : Hub
     public async Task MapChange(MapType type)
     {
         _facade.ChangeMap(type);
-        _facade.ClearMove();
+        _facade.ClearMove(Context.ConnectionId);
     }
 
     public async Task Undo()

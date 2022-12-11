@@ -2,6 +2,7 @@
 
 using Backend.Enums;
 using Backend.Utilities.ChainOfResponsibility;
+using Backend.Utilities.Composite;
 using Backend.Utilities.State;
 using Backend.Utilities.Strategy;
 
@@ -24,12 +25,14 @@ public abstract class Unit
     public virtual int PosY { get; set; }
     public virtual string Label { get; set; }
     public virtual DamageCalculator DamageCalculator { get; set; }
+    public virtual PowerupObject PowerupObject { get; set; }
 
     private ShootingAlgorithm _shootingAlgorithm = new ShortRangeShootingAlgorithm();
 
     protected Unit()
     {
         State = new FullyHealedState(this);
+        PowerupObject = new ContainerHolder();
     }
 
     public abstract string GetLabel();

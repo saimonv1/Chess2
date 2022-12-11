@@ -31,8 +31,8 @@ public class BestFacade
     public void LongShootingAlgorithm(string connectionId) => 
         _game.ChangeShootingType(connectionId, new LongRangeShootingAlgorithm());
 
-    public void ClearMove() =>
-        _game.RefreshMoves();
+    public void ClearMove(string connectionId) =>
+        _game.RefreshMoves(connectionId);
 
     public void ChangeMap(MapType mapType) =>
         _game.ChangeMap(mapType);

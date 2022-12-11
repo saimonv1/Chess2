@@ -11,7 +11,7 @@ public class ShootingAlgorithmDamageCalculator : DamageCalculator
 {
     public override int CalculateDamage(Unit unit)
     {
-        DamageSum += unit.GetShootingAlgorithm() switch
+        DamageSum = unit.GetShootingAlgorithm() switch
         {
             ShortRangeShootingAlgorithm => 1,
             LongRangeShootingAlgorithm => 2,

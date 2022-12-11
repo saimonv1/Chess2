@@ -3,10 +3,9 @@
     public class AttackSmall : IAttack
     {
 
-        public Unit AddDamage(Unit unit)
+        public int AddDamage()
         {
-            unit.Damage += 15;
-            return unit;
+            return 15;
         }
     }
 }

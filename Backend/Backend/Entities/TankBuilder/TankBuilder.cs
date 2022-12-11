@@ -27,7 +27,9 @@ public class TankBuilder : Builder
     {
         Unit.Damage = 1;
         var initialCalculator = new UnitBaseDamageCalculator();
-        initialCalculator.SetNextCalculator(new ShootingAlgorithmDamageCalculator());
+        var shootingAlgorithmCalculator = new ShootingAlgorithmDamageCalculator();
+        shootingAlgorithmCalculator.SetNextCalculator(new CompositeDamageCalculator());
+        initialCalculator.SetNextCalculator(shootingAlgorithmCalculator);
         Unit.DamageCalculator = initialCalculator;
         return this;
     }

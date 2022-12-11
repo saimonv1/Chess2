@@ -2,6 +2,6 @@
 {
     public interface IAttack
     {
-        public Unit AddDamage(Unit unit);
+        public int AddDamage();
     }
 }

@@ -2,10 +2,9 @@
 {
     public class AttackBig : IAttack
     {
-        public Unit AddDamage(Unit unit)
+        public int AddDamage()
         {
-            unit.Damage += 30;
-            return unit;
+            return 30;
         }
     }
 }

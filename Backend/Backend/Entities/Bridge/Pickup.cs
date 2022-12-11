@@ -1,4 +1,6 @@
-﻿namespace Backend.Entities.Bridge;
+﻿using Backend.Utilities.Composite;
+
+namespace Backend.Entities.Bridge;
 
 public class Pickup
 {
@@ -18,8 +20,7 @@ public class Pickup
         }
         if (_attack != null)
         {
-            unit = _attack.AddDamage(unit);
-            unit = new UnitDamageDecorator(unit);
+            unit.PowerupObject.Add(new DamagePowerup(_attack, 3));
         }
         return unit;
     }
