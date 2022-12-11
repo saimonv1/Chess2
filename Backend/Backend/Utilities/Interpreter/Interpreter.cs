@@ -191,42 +191,42 @@ public static class Interpreter
 
     private static bool IsUp(string token)
     {
-        string pattern = @"^(u(p)?|\^)$";
+        string pattern = @"^(u(u*p)?|\^)$";
 
         return IsMatching(token, pattern);
     }
 
     private static bool IsDown(string token)
     {
-        string pattern = @"^(d(own)?|V)$";
+        string pattern = @"^(d(o+wn)?|V)$";
 
         return IsMatching(token, pattern);
     }
 
     private static bool IsLeft(string token)
     {
-        string pattern = @"^(l(eft)?|<)$";
+        string pattern = @"^(l(e+ft)?|<)$";
 
         return IsMatching(token, pattern);
     }
 
     private static bool IsRight(string token)
     {
-        string pattern = @"^(r(ight)?|>)$";
+        string pattern = @"^(r(i+ght)?|>)$";
 
         return IsMatching(token, pattern);
     }
 
     private static bool IsShoot(string token)
     {
-        string pattern = @"^(p[eo]w|s(h(oot)?)?|b(am|ang|oom)|murder|k(apow|ill)|d(estroy|amage))$";
+        string pattern = @"^(p[eo]+w|s(h(o+t)?)?|b(a+m|a+ng|oo+m)|murder|k(apow|ill)|d(estroy|amage))$";
 
         return IsMatching(token, pattern);
     }
 
     private static bool IsMove(string token)
     {
-        string pattern = @"^(m(v|o+ve)?|r(u+n)?|w(alk)?)$";
+        string pattern = @"^(m(v|o+ve)?|r(u+n)?|w(a+lk)?)$";
 
         return IsMatching(token, pattern);
     }
