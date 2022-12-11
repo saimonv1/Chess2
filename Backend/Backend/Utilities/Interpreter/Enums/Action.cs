@@ -1,6 +1,6 @@
 namespace Backend.Utilities.Interpreter.Enums;
 
-enum Type {
+public enum Action {
     Shoot,
     Move
 }

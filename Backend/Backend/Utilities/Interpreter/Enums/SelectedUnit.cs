@@ -1,6 +1,6 @@
 namespace Backend.Utilities.Interpreter.Enums;
 
-enum Unit {
+public enum SelectedUnit {
     Tank,
     Helicopter
 }
