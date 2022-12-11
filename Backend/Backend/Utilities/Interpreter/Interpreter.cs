@@ -15,71 +15,82 @@ public static class Interpreter
 
     private static InterpretedCommand? InterpretTokens(string[] tokens, bool wasUnitParsedYet)
     {
-        if (!wasUnitParsedYet)
+        try
         {
-            var unit = InterpretUnit(tokens[0]);
-
-            if (unit is not null)
+            if (!wasUnitParsedYet)
             {
-                var command = InterpretTokens(tokens.Skip(1).ToArray(), true);
+                var unit = InterpretUnit(tokens[0]);
 
-                if (command is not null)
+                if (unit is not null)
                 {
-                    command.unit = unit;
+                    var command = InterpretTokens(tokens.Skip(1).ToArray(), true);
+
+                    if (command is not null)
+                    {
+                        command.unit = unit;
+                    }
+
+                    return command;
                 }
 
-                return command;
+                return InterpretTokens(tokens, true);
             }
 
-            return InterpretTokens(tokens, true);
-        }
+            var action = InterpretAction(tokens[0]);
 
-        var action = InterpretAction(tokens[0]);
-
-        if (action is null)
-        {
-            return null;
-        }
-
-        var nullDirection = InterpretDirection(tokens[1]);
-
-        if (nullDirection is null)
-        {
-            return null;
-        }
-
-        var direction = nullDirection.Value;
-
-        switch (action)
-        {
-            case Enums.Action.Shoot:
-                var nullLength = InterpretLength(tokens[2]);
-
-                if (nullLength is null)
-                {
-                    return null;
-                }
-
-                var length = nullLength.Value;
-
-                return new InterpretedShootCommand(null, direction, length);
-
-            case Enums.Action.Move:
-                var nullAmount = ParseNumber(tokens[2]);
-
-                if (nullAmount is null)
-                {
-                    return null;
-                }
-
-                var amount = nullAmount.Value;
-
-                return new InterpretedMoveCommand(null, direction, amount);
-
-            default:
+            if (action is null)
+            {
                 return null;
-        }
+            }
 
+            var nullDirection = InterpretDirection(tokens[1]);
+
+            if (nullDirection is null)
+            {
+                return null;
+            }
+
+            var direction = nullDirection.Value;
+
+            switch (action)
+            {
+                case Enums.Action.Shoot:
+                    var nullLength = InterpretLength(tokens[2]);
+
+                    if (nullLength is null)
+                    {
+                        return null;
+                    }
+
+                    var length = nullLength.Value;
+
+                    return new InterpretedShootCommand(null, direction, length);
+
+                case Enums.Action.Move:
+                    var amount = 1;
+                    
+                    if (tokens.Length > 2)
+                    {
+                        var nullAmount = ParseNumber(tokens[2]);
+
+                        if (nullAmount is null)
+                        {
+                            return null;
+                        }
+
+                        amount = nullAmount.Value;
+                    }
+
+                    return new InterpretedMoveCommand(null, direction, amount);
+
+                default:
+                    return null;
+            }
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private static SelectedUnit? InterpretUnit(string token)
