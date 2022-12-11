@@ -1,4 +1,10 @@
-﻿namespace Backend.Entities.TankBuilder;
+﻿#region
+
+using Backend.Utilities.ChainOfResponsibility;
+
+#endregion
+
+namespace Backend.Entities.TankBuilder;
 
 public class TankBuilder : Builder
 {
@@ -20,6 +26,9 @@ public class TankBuilder : Builder
     public override Builder AddWeaponry()
     {
         Unit.Damage = 1;
+        var initialCalculator = new UnitBaseDamageCalculator();
+        initialCalculator.SetNextCalculator(new ShootingAlgorithmDamageCalculator());
+        Unit.DamageCalculator = initialCalculator;
         return this;
     }
 }

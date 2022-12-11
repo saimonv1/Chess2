@@ -1,6 +1,7 @@
 ﻿#region
 
 using Backend.Enums;
+using Backend.Utilities.ChainOfResponsibility;
 
 #endregion
 
@@ -50,7 +51,7 @@ public class UnitDecorator : Unit
         get => _unit.IsAerial;
         set => _unit.IsAerial = value;
     }
-    
+
     public override bool IsDestroyed
     {
         get => _unit.IsDestroyed;
@@ -79,6 +80,12 @@ public class UnitDecorator : Unit
     {
         get => _unit.Label;
         set => _unit.Label = value;
+    }
+
+    public override DamageCalculator DamageCalculator
+    {
+        get => _unit.DamageCalculator;
+        set => _unit.DamageCalculator = value;
     }
 
     public override string GetLabel()

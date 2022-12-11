@@ -1,42 +1,40 @@
 ﻿#region
 
-using Backend.Entities;
-
 #endregion
 
 namespace Backend.Utilities.Strategy;
 
 public class LongRangeShootingAlgorithm : ShootingAlgorithm
 {
-    public override Shot ShootLeft(Unit unit) =>
+    public override Shot ShootLeft(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 1 + unit.Damage,
-            PosX = unit.PosX - 2,
-            PosY = unit.PosY
+            Damage = damage,
+            PosX = posX - 2,
+            PosY = posY
         };
 
-    public override Shot ShootRight(Unit unit) =>
+    public override Shot ShootRight(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 1 + unit.Damage,
-            PosX = unit.PosX + 2,
-            PosY = unit.PosY
+            Damage = damage,
+            PosX = posX + 2,
+            PosY = posY
         };
 
-    public override Shot ShootUp(Unit unit) =>
+    public override Shot ShootUp(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 1 + unit.Damage,
-            PosX = unit.PosX,
-            PosY = unit.PosY - 2
+            Damage = damage,
+            PosX = posX,
+            PosY = posY - 2
         };
 
-    public override Shot ShootDown(Unit unit) =>
+    public override Shot ShootDown(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 1 + unit.Damage,
-            PosX = unit.PosX,
-            PosY = unit.PosY + 2
+            Damage = damage,
+            PosX = posX,
+            PosY = posY + 2
         };
 }

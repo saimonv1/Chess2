@@ -1,5 +1,9 @@
-﻿using Backend.Entities;
+﻿#region
+
+using Backend.Entities;
 using Backend.Utilities.Strategy;
+
+#endregion
 
 namespace Backend.Utilities.State;
 
@@ -17,6 +21,7 @@ public class FullyHealedState : State
             Destroy();
             return;
         }
+
         Unit.ChangeState(new DamagedState(Unit));
     }
 

@@ -1,42 +1,40 @@
 ﻿#region
 
-using Backend.Entities;
-
 #endregion
 
 namespace Backend.Utilities.Strategy;
 
 public class ShortRangeShootingAlgorithm : ShootingAlgorithm
 {
-    public override Shot ShootLeft(Unit unit) =>
+    public override Shot ShootLeft(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 2 + unit.Damage,
-            PosX = unit.PosX - 1,
-            PosY = unit.PosY
+            Damage = damage,
+            PosX = posX - 1,
+            PosY = posY
         };
 
-    public override Shot ShootRight(Unit unit) =>
+    public override Shot ShootRight(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 2 + unit.Damage,
-            PosX = unit.PosX + 1,
-            PosY = unit.PosY
+            Damage = damage,
+            PosX = posX + 1,
+            PosY = posY
         };
 
-    public override Shot ShootUp(Unit unit) =>
+    public override Shot ShootUp(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 2 + unit.Damage,
-            PosX = unit.PosX,
-            PosY = unit.PosY - 1
+            Damage = damage,
+            PosX = posX,
+            PosY = posY - 1
         };
 
-    public override Shot ShootDown(Unit unit) =>
+    public override Shot ShootDown(int posX, int posY, int damage) =>
         new()
         {
-            Damage = 2 + unit.Damage,
-            PosX = unit.PosX,
-            PosY = unit.PosY + 1
+            Damage = damage,
+            PosX = posX,
+            PosY = posY + 1
         };
 }

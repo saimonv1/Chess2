@@ -1,7 +1,7 @@
 ﻿#region
 
-using Backend.Entities.Bridge;
 using Backend.Enums;
+using Backend.Utilities.ChainOfResponsibility;
 using Backend.Utilities.State;
 using Backend.Utilities.Strategy;
 
@@ -11,7 +11,7 @@ namespace Backend.Entities;
 
 public abstract class Unit
 {
-    private State State { get; set; }
+    public State State { get; private set; }
     public virtual int CurrentHealth { get; set; }
     public virtual int MaxHealth { get; set; }
     public virtual int MovesPerTurn { get; set; }
@@ -23,14 +23,15 @@ public abstract class Unit
     public virtual int PosX { get; set; }
     public virtual int PosY { get; set; }
     public virtual string Label { get; set; }
-    
+    public virtual DamageCalculator DamageCalculator { get; set; }
+
     private ShootingAlgorithm _shootingAlgorithm = new ShortRangeShootingAlgorithm();
 
     protected Unit()
     {
         State = new FullyHealedState(this);
     }
-    
+
     public abstract string GetLabel();
 
     public ShootingAlgorithm GetShootingAlgorithm() =>
@@ -39,13 +40,20 @@ public abstract class Unit
     public void SetShootingAlgorithm(ShootingAlgorithm shootingAlgorithm) =>
         _shootingAlgorithm = shootingAlgorithm;
 
+    public int ShotDamage()
+    {
+        var damage = DamageCalculator.CalculateDamage(this);
+        Console.WriteLine($"Damage calculators returned {damage} damage");
+        return damage;
+    }
+
     public Shot Shoot(int move) =>
         move switch
         {
-            0 => _shootingAlgorithm.ShootUp(this),
-            1 => _shootingAlgorithm.ShootRight(this),
-            2 => _shootingAlgorithm.ShootDown(this),
-            3 => _shootingAlgorithm.ShootLeft(this),
+            0 => _shootingAlgorithm.ShootUp(PosX, PosY, ShotDamage()),
+            1 => _shootingAlgorithm.ShootRight(PosX, PosY, ShotDamage()),
+            2 => _shootingAlgorithm.ShootDown(PosX, PosY, ShotDamage()),
+            3 => _shootingAlgorithm.ShootLeft(PosX, PosY, ShotDamage()),
             _ => new Shot()
         };
 
