@@ -13,6 +13,8 @@ const GameContext = React.createContext({
     isReady: false,
     isMyTurn: false,
 
+    isInvalidCommand: false,
+
     addPlayer: (player) => {},
     removePlayer: (id) => {},
 
@@ -31,6 +33,7 @@ const GameContext = React.createContext({
     setMovesLeft: (moves) => {},
     setPickupsLeft: (pickups) => {},
     changeCurrentUnit: (unit) => {},
+    changeInvalidCommand: (isInvalidCommand) => {},
 });
 
 export default GameContext;

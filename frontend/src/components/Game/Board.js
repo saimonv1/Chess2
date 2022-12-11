@@ -8,7 +8,7 @@ const Board = (props) => {
   const gameCtx = useContext(GameContext);
 
   const findCurrentUnit = () => {
-    switch(gameCtx.currentUnit) {
+    switch (gameCtx.currentUnit) {
       case 0:
         return "tank";
       case 1:
@@ -16,11 +16,11 @@ const Board = (props) => {
       default:
         return "";
     }
-  }
+  };
 
   const onFormSubmitHandler = async (event) => {
     event.preventDefault();
-    
+
     let move = -1;
     switch (event.target.move.value) {
       case "up":
@@ -65,14 +65,15 @@ const Board = (props) => {
     }
     console.log(move);
     try {
-      if(move < 4) {
-        await props.connection.invoke("SendMove", move);
-      }
-      else {
+      if (move < 4) {
+        await props.connection.invoke("SendMove", move, 1);
+      } else {
         const power = move / 4;
         const direction = move % 4;
         debugger;
-        power === 1 ? await props.connection.invoke("ShortShooting") : await props.connection.invoke("LongShooting")
+        power === 1
+          ? await props.connection.invoke("ShortShooting")
+          : await props.connection.invoke("LongShooting");
         await props.connection.invoke("Shoot", direction);
       }
     } catch (e) {
@@ -80,7 +81,7 @@ const Board = (props) => {
     }
   };
 
-  const undoHandler = async event => {
+  const undoHandler = async (event) => {
     event.preventDefault();
     try {
       await props.connection.invoke("Undo");
@@ -88,7 +89,6 @@ const Board = (props) => {
       console.log(e);
     }
   };
-
 
   const onMapChangeSubmitHandler = async (event) => {
     event.preventDefault();
@@ -98,7 +98,17 @@ const Board = (props) => {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
+
+  const onCommandSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      await props.connection.invoke("Interpret", event.target.command.value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className={classes.divrow}>
@@ -113,16 +123,39 @@ const Board = (props) => {
             <option value="left">Move Left (Cost: 1)</option>
             <option value="right">Move Right (Cost: 1)</option>
             <option value="down">Move Down (Cost: 1)</option>
-            <option value="sup">Shoot Up. Range: Short, Damage: 2 (Cost: end)</option>
-            <option value="sleft">Shoot Left. Range: Short, Damage: 2 (Cost: end)</option>
-            <option value="sright">Shoot Right. Range: Short, Damage: 2 (Cost: end)</option>
-            <option value="sdown">Shoot Down. Range: Short, Damage: 2 (Cost: end)</option>
-            <option value="slup">Shoot Up. Range: Long, Damage: 1 (Cost: end)</option>
-            <option value="slleft">Shoot Left. Range: Long, Damage: 1 (Cost: end)</option>
-            <option value="slright">Shoot Right. Range: Long, Damage: 1 (Cost: end)</option>
-            <option value="sldown">Shoot Down. Range: Long, Damage: 1 (Cost: end)</option>
+            <option value="sup">
+              Shoot Up. Range: Short, Damage: 2 (Cost: end)
+            </option>
+            <option value="sleft">
+              Shoot Left. Range: Short, Damage: 2 (Cost: end)
+            </option>
+            <option value="sright">
+              Shoot Right. Range: Short, Damage: 2 (Cost: end)
+            </option>
+            <option value="sdown">
+              Shoot Down. Range: Short, Damage: 2 (Cost: end)
+            </option>
+            <option value="slup">
+              Shoot Up. Range: Long, Damage: 1 (Cost: end)
+            </option>
+            <option value="slleft">
+              Shoot Left. Range: Long, Damage: 1 (Cost: end)
+            </option>
+            <option value="slright">
+              Shoot Right. Range: Long, Damage: 1 (Cost: end)
+            </option>
+            <option value="sldown">
+              Shoot Down. Range: Long, Damage: 1 (Cost: end)
+            </option>
           </select>
-          <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
+          <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn} />
+        </form>
+        <form onSubmit={onCommandSubmitHandler}>
+          <input type="text" id="command" name="command" />
+          <input type="submit" value="Submit" disabled={!gameCtx.isMyTurn} />
+          <p style={{ color: "red" }}>
+            {gameCtx.isInvalidCommand ? "Neteisinga komanda" : ""}
+          </p>
         </form>
         <button onClick={undoHandler}>Undo</button>
 
@@ -136,7 +169,12 @@ const Board = (props) => {
             <option value="2">O</option>
             <option value="3">Random</option>
           </select>
-          <input className={classes.test} type="submit" value="Submit" disabled={!gameCtx.isMyTurn}/>
+          <input
+            className={classes.test}
+            type="submit"
+            value="Submit"
+            disabled={!gameCtx.isMyTurn}
+          />
         </form>
       </div>
 
@@ -147,7 +185,16 @@ const Board = (props) => {
             return (
               <div key={`Row: ${rowId}`} className={classes.row}>
                 {row.map((node, nodeId) => {
-                  return <Tile key={`Node: ${rowId} ${nodeId}`} row={rowId} node={nodeId} obstacle={node.isObstacle} unit={node.unit} pickup={node.pickup}/>;
+                  return (
+                    <Tile
+                      key={`Node: ${rowId} ${nodeId}`}
+                      row={rowId}
+                      node={nodeId}
+                      obstacle={node.isObstacle}
+                      unit={node.unit}
+                      pickup={node.pickup}
+                    />
+                  );
                 })}
               </div>
             );
@@ -157,7 +204,9 @@ const Board = (props) => {
 
       <div className={classes.divcolumnsm}>
         <h1>Players</h1>
-        <p><b>Moves left:</b> {gameCtx.movesLeft}</p>
+        <p>
+          <b>Moves left:</b> {gameCtx.movesLeft}
+        </p>
         {gameCtx.players.map((player) => {
           let colorClass = classes.red;
           if (player.color === 0) {
@@ -177,7 +226,9 @@ const Board = (props) => {
           );
         })}
         <h1>Pickups</h1>
-        <p><b>Pickups left:</b> {gameCtx.pickupsLeft}</p>
+        <p>
+          <b>Pickups left:</b> {gameCtx.pickupsLeft}
+        </p>
       </div>
     </div>
   );
