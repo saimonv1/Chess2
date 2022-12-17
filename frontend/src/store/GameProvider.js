@@ -14,6 +14,7 @@ const defaultGameState = {
   currentUnit: 0,
   isReady: false,
   isMyTurn: false,
+  canRevert: false,
 };
 
 const gameReducer = (state, action) => {
@@ -108,6 +109,10 @@ const gameReducer = (state, action) => {
     return { ...state, isInvalidCommand: action.state };
   }
 
+  if (action.type === "CAN_REVERT") {
+    return { ...state, canRevert: action.item };
+  }
+
   return defaultGameState;
 };
 
@@ -191,6 +196,13 @@ const GameProvider = (props) => {
     });
   };
 
+  const setCanRevertHandler = (canRevert) => {
+    dispatchGameAction({
+      type: "CAN_REVERT",
+      item: canRevert,
+    });
+  };
+
   const gameContext = {
     players: gameState.players,
     gameStatus: gameState.gameStatus,
@@ -203,6 +215,7 @@ const GameProvider = (props) => {
     currentUnit: gameState.currentUnit,
     isReady: gameState.isReady,
     isMyTurn: gameState.isMyTurn,
+    canRevert: gameState.canRevert,
 
     isInvalidCommand: gameState.isInvalidCommand,
 
@@ -222,6 +235,7 @@ const GameProvider = (props) => {
     setPickupsLeft: setPickupsLeftHandler,
     changeCurrentUnit: changeCurrentUnitHandler,
     changeInvalidCommand: changeInvalidCommandHandler,
+    setCanRevert: setCanRevertHandler,
   };
 
   return (

@@ -89,3 +89,7 @@
     font-size: 1%;
     bottom: 0;
 }
+
+.revert { 
+    background-color: red;
+}

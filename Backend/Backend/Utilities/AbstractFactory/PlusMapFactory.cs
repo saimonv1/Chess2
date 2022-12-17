@@ -51,6 +51,7 @@ public class PlusMapFactory : MapFactory
         map.Tiles[2, 7] = new TilePickup(new Pickup(new Entities.Bridge.HealBig(), null));
         map.Tiles[3, 7] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackSmall()));
         map.Tiles[4, 7] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackBig()));
+        map.Tiles[1, 9] = new Tile(false, true);
         ///
 
         return map;
