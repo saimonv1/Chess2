@@ -90,6 +90,15 @@ const Board = (props) => {
     }
   };
 
+  const revertMapHandler = async (event) => {
+    try {
+      await props.connection.invoke("MapRevert");
+      gameCtx.setCanRevert(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const onMapChangeSubmitHandler = async (event) => {
     event.preventDefault();
 
@@ -158,7 +167,9 @@ const Board = (props) => {
           </p>
         </form>
         <button onClick={undoHandler}>Undo</button>
-
+        <br />
+        <br />
+        <button onClick={revertMapHandler} disabled={!gameCtx.canRevert}>Revert map</button>
         <form onSubmit={onMapChangeSubmitHandler}>
           <label style={{ display: "block" }} htmlFor="mapChange">
             Change a map:
@@ -191,6 +202,7 @@ const Board = (props) => {
                       row={rowId}
                       node={nodeId}
                       obstacle={node.isObstacle}
+                      revert={node.isRevert}
                       unit={node.unit}
                       pickup={node.pickup}
                     />

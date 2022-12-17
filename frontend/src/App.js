@@ -92,6 +92,10 @@ function App() {
         gameCtx.changeInvalidCommand(state);
       });
 
+      connection.on("SetCanRevert", (canRevert) => {
+        gameCtx.setCanRevert(canRevert);
+      });
+
       await connection
         .start()
         .then(() => {

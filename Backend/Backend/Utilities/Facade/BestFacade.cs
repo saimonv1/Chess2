@@ -48,4 +48,7 @@ public class BestFacade
 
     public Color FreeColor() =>
         _game.GetFirstAvailableFreeColor();
+
+    public void MapRevert() =>
+        _game.UndoMap();
 }

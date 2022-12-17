@@ -4,19 +4,21 @@ namespace Backend.Entities;
 public class Tile : ICloneable
 {
     public bool IsObstacle { get; private set; } = false;
+    public bool IsRevert { get; set; } = false;
 
     protected Tile()
     {
 
     }
 
-    public Tile(bool obstacle)
+    public Tile(bool obstacle, bool isRevert = false)
     {
         IsObstacle = obstacle;
+        IsRevert = isRevert;
     }
 
-    public object Clone()
+    public virtual object Clone()
     {
-        return IsObstacle ? TileFlyweight.obstacleTile : TileFlyweight.emptyTile;
+        return IsObstacle ? TileFlyweight.obstacleTile : IsRevert ? TileFlyweight.revertTile : TileFlyweight.emptyTile;
     }
 }

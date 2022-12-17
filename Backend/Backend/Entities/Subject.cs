@@ -1,6 +1,9 @@
-﻿namespace Backend.Entities
+﻿using Backend.Memento;
+using Newtonsoft.Json.Linq;
+
+namespace Backend.Entities
 {
-    public class Subject
+    public class Subject : IOriginator
     {
         private List<Player> _observers = new List<Player>();
         private Map _map;
@@ -24,11 +27,26 @@
         }
         public void Notify()
         {
-            //Console.WriteLine(this + " updated");
+            Console.WriteLine(this + " updated");
             _observers.ForEach(o =>
             {
                 o.Update(this._map);
             });
+        }
+
+        public IMemento Save()
+        {
+            return new MapMemento((Map)this._map.Clone());
+        }
+
+        public void Restore(IMemento memento)
+        {
+            var state = memento.GetState();
+            Console.WriteLine("OLD MAP:");
+            Console.WriteLine(_map);
+            Console.WriteLine("NEW MAP:");
+            Console.WriteLine(state);
+            this.Map = state;
         }
     }
 }

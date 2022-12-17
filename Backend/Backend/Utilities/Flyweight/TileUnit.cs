@@ -8,4 +8,8 @@ public class TileUnit : Tile
     {
         Unit = unit;
     }
+    public override object Clone()
+    {
+        return new TileUnit(this.Unit);
+    }
 }

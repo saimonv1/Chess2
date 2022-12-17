@@ -4,8 +4,8 @@ namespace Backend.Utilities.Command
 {
     public interface ICommand
     {
-        public int Execute(Unit unit, Map map, Game game);
-        public int Undo(Unit unit, Map map, Game game);
+        public int Execute(Unit unit, Map map, Game game, string connectionId);
+        public int Undo(Unit unit, Map map, Game game, string connectionId);
     }
 
     //public interface IMoveCommand
