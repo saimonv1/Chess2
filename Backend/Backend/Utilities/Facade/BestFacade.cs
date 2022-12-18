@@ -49,6 +49,15 @@ public class BestFacade
     public Color FreeColor() =>
         _game.GetFirstAvailableFreeColor();
 
+    public bool IsGameOver() =>
+        _game.IsGameOver();
+
+    public void ClearPlayers() =>
+        _game.ClearPlayers();
+
+    public string GetWinnerName() =>
+        _game.GetWinnerName();
+
     public void MapRevert() =>
         _game.UndoMap();
 }

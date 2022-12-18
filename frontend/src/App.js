@@ -92,6 +92,13 @@ function App() {
         gameCtx.changeInvalidCommand(state);
       });
 
+      connection.on("GameOver", (winner) => {
+        gameCtx.changeGameStatus(false);
+        gameCtx.changeLastWinner(winner);
+        gameCtx.resetPlayers();
+        gameCtx.changeName('');
+      })
+
       connection.on("SetCanRevert", (canRevert) => {
         gameCtx.setCanRevert(canRevert);
       });
