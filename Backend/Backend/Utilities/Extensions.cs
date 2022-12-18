@@ -38,4 +38,19 @@ public static class Extensions
         }
         return count;
     }
+
+    public static void FixUnitPositions(this Map map)
+    {
+        for (int i = 0; i < map.Tiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.Tiles.GetLength(1); j++)
+            {
+                if (map.Tiles[i, j] is TileUnit)
+                {
+                    (map.Tiles[i, j] as TileUnit).Unit.PosX = i;
+                    (map.Tiles[i, j] as TileUnit).Unit.PosY = j;
+                }
+            }
+        }
+    }
 }
