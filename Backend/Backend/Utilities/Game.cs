@@ -5,6 +5,7 @@ using Backend.Enums;
 using Backend.Utilities.AbstractFactory;
 using Backend.Utilities.Strategy;
 using Backend.Flyweight;
+using Backend.Utilities.State;
 
 #endregion
 
@@ -13,7 +14,7 @@ namespace Backend.Utilities;
 public class Game
 {
     private static readonly Game _game = new();
-    private static List<Player> _connectedPlayers { get; } = new(4);
+    private static List<Player> _connectedPlayers { get; set; } = new(4);
     private static Subject _mapSubject { get; } = new();
     private static MapFactory _mapFactory = new PlusMapFactory();
 
@@ -88,6 +89,15 @@ public class Game
 
     public Map GenerateMap()
     {
+        var random = new Random();
+        var number = random.Next(1, 4);
+        _mapFactory = number switch
+        {
+            1 => new EmptyMapFactory(),
+            2 => new OMapFactory(),
+            3 => new PlusMapFactory(),
+            4 => new RandomMapFactory()
+        };
         _mapSubject.Map = _mapFactory.GenerateMap(_connectedPlayers);
         return _mapSubject.Map;
     }
@@ -133,49 +143,15 @@ public class Game
     {
         var map = _mapSubject.Map;
         var unit = _connectedPlayers.First(x => x.ConnectionID == connectionId).Units.First();
-        var shot = unit.Shoot(move);
-        int maxX, maxY, minX, minY;
-        if (shot.PosX > unit.PosX)
+        var shots = unit.Shoot(move);
+        foreach (var shot in shots)
         {
-            maxX = shot.PosX;
-            minX = unit.PosX;
-        }
-        else
-        {
-            maxX = unit.PosX;
-            minX = shot.PosX;
-        }
-        if (shot.PosY > unit.PosY)
-        {
-            maxY = shot.PosY;
-            minY = unit.PosY;
-        }
-        else
-        {
-            maxY = unit.PosY;
-            minY = shot.PosY;
-        }
-        for (var i = minX; i <= maxX; i++)
-        {
-            for (var j = minY; j <= maxY; j++)
+            if (map.Tiles[shot.PosX, shot.PosY] is TileUnit enemy)
             {
-                if (i == unit.PosX && j == unit.PosY)
-                {
-                    continue;
-                }
-
-                if (map.Tiles[i, j] is TileUnit enemy)
-                {
-                    enemy.Unit.TakeDamage(shot);
-                    _mapSubject.Map = map;
-                    // if (enemy.Unit.CurrentHealth <= 0)
-                    // {
-                    //     map.Tiles[i, j] = TileFlyweight.emptyTile;
-                    //     _mapSubject.Map = map;
-                    // }
-                }
+                enemy.Unit.TakeDamage(shot);
             }
         }
+        _mapSubject.Map = map;
     }
 
     public void RefreshMoves(string connectionId)
@@ -190,6 +166,15 @@ public class Game
     {
         return _mapSubject.Map;
     }
+
+    public bool IsGameOver() => 
+        _connectedPlayers.Count(x => x.Units.Any(y => y.State is not DestroyedState)) == 1;
+
+    public string GetWinnerName() =>
+        _connectedPlayers.First(x => x.Units.Any(y => y.State is not DestroyedState)).Name;
+
+    public void ClearPlayers() =>
+        _connectedPlayers = new List<Player>();
 
     public Color GetFirstAvailableFreeColor()
     {

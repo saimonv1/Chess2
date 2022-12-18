@@ -50,14 +50,14 @@ public abstract class Unit
         return damage;
     }
 
-    public Shot Shoot(int move) =>
+    public List<Shot> Shoot(int move) =>
         move switch
         {
             0 => _shootingAlgorithm.ShootUp(PosX, PosY, ShotDamage()),
             1 => _shootingAlgorithm.ShootRight(PosX, PosY, ShotDamage()),
             2 => _shootingAlgorithm.ShootDown(PosX, PosY, ShotDamage()),
             3 => _shootingAlgorithm.ShootLeft(PosX, PosY, ShotDamage()),
-            _ => new Shot()
+            _ => new List<Shot>()
         };
 
     public void Heal(int health) =>

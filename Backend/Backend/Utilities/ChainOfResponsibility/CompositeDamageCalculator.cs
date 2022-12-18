@@ -1,5 +1,4 @@
 ﻿using Backend.Entities;
-using Backend.Utilities.Composite;
 
 namespace Backend.Utilities.ChainOfResponsibility;
 
