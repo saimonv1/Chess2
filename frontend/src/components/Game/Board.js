@@ -68,10 +68,10 @@ const Board = (props) => {
       if (move < 4) {
         await props.connection.invoke("SendMove", move, 1);
       } else {
-        const power = move / 4;
+        const power = parseInt(move / 4);
         const direction = move % 4;
         debugger;
-        power === 1
+        power == 1
           ? await props.connection.invoke("ShortShooting")
           : await props.connection.invoke("LongShooting");
         await props.connection.invoke("Shoot", direction);

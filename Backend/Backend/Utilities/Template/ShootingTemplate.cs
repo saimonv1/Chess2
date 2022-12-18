@@ -25,6 +25,19 @@ public abstract class ShootingTemplate
     public abstract void SetDamage(int initialDamage);
     private void SetInitialShotCoords(int x, int y)
     {
+        x = x switch
+        {
+            < 0 => 0,
+            > 19 => 19,
+            _ => x
+        };
+
+        y = y switch
+        {
+            < 0 => 0,
+            > 19 => 19,
+            _ => y
+        };
         PosX = x;
         PosY = y;
         shots.Add(new Shot { Damage = Damage, PosX = x, PosY = y });
