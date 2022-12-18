@@ -1,6 +1,8 @@
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
+import GameContext from '../../store/game-context';
 
 const User = (props) => {
+    const gameCtx = useContext(GameContext);
     const userNameRef = useRef();
 
     const onSubmitHandler = async (event) => {
@@ -16,6 +18,7 @@ const User = (props) => {
 
     return (
         <form onSubmit={onSubmitHandler}>
+            {gameCtx.lastWinner && <div><b>Last winner:</b>{gameCtx.lastWinner}</div>}
             <h1>Enter User Name:</h1>
             <input ref={userNameRef} type='text' name='name' />
             <input type="submit" value="Submit" />
