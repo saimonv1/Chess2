@@ -1,11 +1,7 @@
-﻿using Backend.Entities.Bridge;
-
-namespace Backend.Utilities.Composite;
+﻿namespace Backend.Utilities.Composite;
 
 public class ContainerHolder : PowerupObject
 {
-    public ContainerHolder() { }
-
     public override void Add(PowerupObject powerupObject)
     {
         if (powerupObject is DamagePowerup)
@@ -16,12 +12,27 @@ public class ContainerHolder : PowerupObject
                 container = new DamagePowerupContainer();
                 children.Add(container);
             }
+
             container.Add(powerupObject);
         }
-        if (powerupObject is not DamagePowerupContainer or ContainerHolder)
+
+        if (powerupObject is HealthPowerup)
+        {
+            var container = children.FirstOrDefault(x => x is HealthContainer);
+            if (container is null)
+            {
+                container = new HealthContainer();
+                children.Add(container);
+            }
+
+            container.Add(powerupObject);
+        }
+
+        if (powerupObject is not DamagePowerupContainer or ContainerHolder or HealthContainer)
         {
             return;
         }
+
         powerupObject.SetParent(this);
         children.Add(powerupObject);
     }
@@ -31,7 +42,7 @@ public class ContainerHolder : PowerupObject
         children.Remove(powerupObject);
     }
 
-    public override List<PowerupObject> GetChildren() => 
+    public override List<PowerupObject> GetChildren() =>
         children;
 
     public override void SetParent(PowerupObject powerupObject)
@@ -52,7 +63,8 @@ public class ContainerHolder : PowerupObject
 
     public override void RemoveExpiredPickups()
     {
-        children.ForEach(x => x.RemoveExpiredPickups());
+        children.Where(x => x is DamagePowerupContainer or ContainerHolder).ToList()
+            .ForEach(x => x.RemoveExpiredPickups());
     }
 
     public override void RemoveTurn()
