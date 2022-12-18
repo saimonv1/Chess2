@@ -170,23 +170,6 @@ const Board = (props) => {
         <br />
         <br />
         <button onClick={revertMapHandler} disabled={!gameCtx.canRevert}>Revert map</button>
-        <form onSubmit={onMapChangeSubmitHandler}>
-          <label style={{ display: "block" }} htmlFor="mapChange">
-            Change a map:
-          </label>
-          <select id="mapChange" name="mapChange">
-            <option value="0">Empty</option>
-            <option value="1">Plus</option>
-            <option value="2">O</option>
-            <option value="3">Random</option>
-          </select>
-          <input
-            className={classes.test}
-            type="submit"
-            value="Submit"
-            disabled={!gameCtx.isMyTurn}
-          />
-        </form>
       </div>
 
       <div className={classes.divcolumn}>
