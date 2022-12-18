@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.AllowAnyOrigin()
+            builder.WithOrigins("https://chess2-front-fiv67.ondigitalocean.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
