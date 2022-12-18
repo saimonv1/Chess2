@@ -4,6 +4,7 @@ import GameContext from "./game-context";
 
 const defaultGameState = {
   players: [],
+  lastWinner: '',
   gameStatus: false,
   map: [],
   movesLeft: 0,
@@ -108,6 +109,14 @@ const gameReducer = (state, action) => {
     return { ...state, isInvalidCommand: action.state };
   }
 
+  if(action.type === "GAME_OVER") {
+    return { ...state, lastWinner: action.item }
+  }
+
+  if(action.type === "RESET_PLAYERS") {
+    return { ...state, players: []}
+  }
+
   return defaultGameState;
 };
 
@@ -116,6 +125,10 @@ const GameProvider = (props) => {
     gameReducer,
     defaultGameState
   );
+
+  const resetPlayersHandler = () => {
+    dispatchGameAction({ type: "RESET_PLAYERS" })
+  }
 
   const addPlayerHandler = (item) => {
     dispatchGameAction({ type: "ADD_PLAYER", item: item });
@@ -155,6 +168,10 @@ const GameProvider = (props) => {
   const insertMapHandler = (map) => {
     dispatchGameAction({ type: "INSERT_MAP", item: map });
   };
+
+  const changeLastWinnerHandler = (winner) => {
+    dispatchGameAction({type: "GAME_OVER", item: winner});
+  }
 
   const gameMoveHandler = (fromX, fromY, toX, toY) => {
     dispatchGameAction({
@@ -199,6 +216,7 @@ const GameProvider = (props) => {
     pickupsLeft: gameState.pickupsLeft,
 
     name: gameState.name,
+    lastWinner: gameState.lastWinner,
     color: gameState.color,
     currentUnit: gameState.currentUnit,
     isReady: gameState.isReady,
@@ -214,6 +232,8 @@ const GameProvider = (props) => {
     changeReadyStatus: changeReadyStatusHandler,
     changeMyReadyStatus: changeMyReadyStatusHandler,
     changeTurnStatus: changeTurnStatusHandler,
+    changeLastWinner: changeLastWinnerHandler,
+    resetPlayers: resetPlayersHandler,
 
     changeGameStatus: changeGameStatusHandler,
     insertMap: insertMapHandler,
