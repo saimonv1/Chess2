@@ -30,6 +30,7 @@ public class Game
 
     private Game()
     {
+        
     }
 
     public static Game GetGameInstance()
@@ -94,6 +95,15 @@ public class Game
 
     public Map GenerateMap()
     {
+        Random rnd = new Random();
+        var number = rnd.Next(0, 3);
+        _mapFactory = number switch
+        {
+            0 => new EmptyMapFactory(),
+            1 => new OMapFactory(),
+            2 => new PlusMapFactory(),
+            3 => new RandomMapFactory(),
+        };
         _mapSubject.Map = _mapFactory.GenerateMap(_connectedPlayers);
         return _mapSubject.Map;
     }

@@ -46,12 +46,11 @@ public class PlusMapFactory : MapFactory
         }
 
         ///PICKUPS
-        /// x - 7, y - 1 2 3 4
-        map.Tiles[1, 7] = new TilePickup(new Pickup(new Entities.Bridge.HealSmall(), null));
-        map.Tiles[2, 7] = new TilePickup(new Pickup(new Entities.Bridge.HealBig(), null));
-        map.Tiles[3, 7] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackSmall()));
-        map.Tiles[4, 7] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackBig()));
-        map.Tiles[1, 9] = new Tile(false, true);
+        map.Tiles[7, 7] = new TilePickup(new Pickup(new Entities.Bridge.HealSmall(), null));
+        map.Tiles[12, 7] = new TilePickup(new Pickup(new Entities.Bridge.HealBig(), null));
+        map.Tiles[7, 12] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackSmall()));
+        map.Tiles[12, 12] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackBig()));
+        map.Tiles[9, 9] = new Tile(false, true);
         ///
 
         return map;

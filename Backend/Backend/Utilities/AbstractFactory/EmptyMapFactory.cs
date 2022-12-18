@@ -1,6 +1,7 @@
 ﻿#region
 
 using Backend.Entities;
+using Backend.Entities.Bridge;
 using Backend.Enums;
 
 #endregion
@@ -21,6 +22,14 @@ public class EmptyMapFactory : MapFactory
 
             map.Tiles[unit.PosX, unit.PosY] = new TileUnit(unit);
         }
+
+        ///PICKUPS
+        map.Tiles[1, 1] = new TilePickup(new Pickup(new Entities.Bridge.HealSmall(), null));
+        map.Tiles[18, 18] = new TilePickup(new Pickup(new Entities.Bridge.HealBig(), null));
+        map.Tiles[1, 18] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackSmall()));
+        map.Tiles[18, 1] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackBig()));
+        map.Tiles[9, 9] = new Tile(false, true);
+        ///
 
         return map;
     }
