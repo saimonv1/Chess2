@@ -2,6 +2,7 @@
 
 using Backend.Entities;
 using Backend.Enums;
+using Backend.Proxy;
 using Backend.Utilities;
 using Backend.Utilities.Command;
 using Backend.Utilities.Facade;
@@ -18,6 +19,8 @@ public class GameHub : Hub
     public static GameHub Instance { get; private set; }
 
     private readonly BestFacade _facade = new();
+
+    private AddPlayerProxy _addPlayerProxy = new();
 
     private const string GameGroup = "GAME";
 
@@ -55,7 +58,7 @@ public class GameHub : Hub
         Console.WriteLine("Entered name: " + name);
         var color = _facade.FreeColor();
         var player = new Player(Context.ConnectionId, name, color, null);
-        switch (_facade.AddPlayer(player))
+        switch (_addPlayerProxy.AddPlayer(_facade, player))
         {
             case AddPlayerState.PlayerWithNameExists:
                 await Clients.Caller.SendAsync("ConfirmUserName", name,
@@ -142,6 +145,11 @@ public class GameHub : Hub
     {
         var moves = Mover.UndoCommand(Context.ConnectionId);
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", moves);
+    }
+
+    public async Task MapRevert()
+    {
+        _facade.MapRevert();
     }
 
     public async Task ReadyUp()

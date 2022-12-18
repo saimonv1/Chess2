@@ -57,4 +57,7 @@ public class BestFacade
 
     public string GetWinnerName() =>
         _game.GetWinnerName();
+
+    public void MapRevert() =>
+        _game.UndoMap();
 }

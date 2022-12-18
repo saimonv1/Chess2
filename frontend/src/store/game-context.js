@@ -13,6 +13,7 @@ const GameContext = React.createContext({
     currentUnit: 0,
     isReady: false,
     isMyTurn: false,
+    canRevert: false,
 
     isInvalidCommand: false,
 
@@ -37,6 +38,7 @@ const GameContext = React.createContext({
     setPickupsLeft: (pickups) => {},
     changeCurrentUnit: (unit) => {},
     changeInvalidCommand: (isInvalidCommand) => {},
+    setCanRevert: (canRevert) => {},
 
     changeLastWinner: (winner) => {},
 });

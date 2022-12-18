@@ -4,7 +4,7 @@ namespace Backend.Utilities.Command
 {
     public class MoveRightCommand : ICommand
     {
-        public int Execute(Unit unit, Map map, Game game)
+        public int Execute(Unit unit, Map map, Game game, string connectionId)
         {
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX + 1, oldY);
@@ -12,7 +12,7 @@ namespace Backend.Utilities.Command
             if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
-            game.MoveItem(oldX, oldY, newX, newY);
+            game.MoveItem(oldX, oldY, newX, newY, connectionId);
 
             unit.PosX = newX;
             unit.PosY = newY;
@@ -22,17 +22,17 @@ namespace Backend.Utilities.Command
             return unit.RemainingTurns;
         }
 
-        public int Undo(Unit unit, Map map, Game game)
+        public int Undo(Unit unit, Map map, Game game, string connectionId)
         {
             ICommand command = new MoveLeftCommand();
-            command.Execute(unit, map, game);
+            command.Execute(unit, map, game, connectionId);
             return unit.RemainingTurns += 2;
         }
     }
 
     public class MoveLeftCommand : ICommand
     {
-        public int Execute(Unit unit, Map map, Game game)
+        public int Execute(Unit unit, Map map, Game game, string connectionId)
         {
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX - 1, oldY);
@@ -40,7 +40,7 @@ namespace Backend.Utilities.Command
             if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
-            game.MoveItem(oldX, oldY, newX, newY);
+            game.MoveItem(oldX, oldY, newX, newY, connectionId);
 
             unit.PosX = newX;
             unit.PosY = newY;
@@ -50,17 +50,17 @@ namespace Backend.Utilities.Command
             return unit.RemainingTurns;
         }
 
-        public int Undo(Unit unit, Map map, Game game)
+        public int Undo(Unit unit, Map map, Game game, string connectionId)
         {
             ICommand command = new MoveRightCommand();
-            command.Execute(unit, map, game);
+            command.Execute(unit, map, game, connectionId);
             return unit.RemainingTurns += 2;
         }
     }
 
     public class MoveUpCommand : ICommand
     {
-        public int Execute(Unit unit, Map map, Game game)
+        public int Execute(Unit unit, Map map, Game game, string connectionId)
         {
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX, oldY - 1);
@@ -68,7 +68,7 @@ namespace Backend.Utilities.Command
             if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
-            game.MoveItem(oldX, oldY, newX, newY);
+            game.MoveItem(oldX, oldY, newX, newY, connectionId);
 
             unit.PosX = newX;
             unit.PosY = newY;
@@ -78,17 +78,17 @@ namespace Backend.Utilities.Command
             return unit.RemainingTurns;
         }
 
-        public int Undo(Unit unit, Map map, Game game)
+        public int Undo(Unit unit, Map map, Game game, string connectionId)
         {
             ICommand command = new MoveDownCommand();
-            command.Execute(unit, map, game);
+            command.Execute(unit, map, game, connectionId);
             return unit.RemainingTurns += 2;
         }
     }
 
     public class MoveDownCommand : ICommand
     {
-        public int Execute(Unit unit, Map map, Game game)
+        public int Execute(Unit unit, Map map, Game game, string connectionId)
         {
             var (oldX, oldY) = (unit.PosX, unit.PosY);
             var (newX, newY) = (oldX, oldY + 1);
@@ -96,7 +96,7 @@ namespace Backend.Utilities.Command
             if (map.Tiles[newX, newY].IsObstacle || map.Tiles[newX, newY] as TileUnit is not null)
                 return unit.RemainingTurns;
 
-            game.MoveItem(oldX, oldY, newX, newY);
+            game.MoveItem(oldX, oldY, newX, newY, connectionId);
 
             unit.PosX = newX;
             unit.PosY = newY;
@@ -106,10 +106,10 @@ namespace Backend.Utilities.Command
             return unit.RemainingTurns;
         }
 
-        public int Undo(Unit unit, Map map, Game game)
+        public int Undo(Unit unit, Map map, Game game, string connectionId)
         {
             ICommand command = new MoveUpCommand();
-            command.Execute(unit, map, game);
+            command.Execute(unit, map, game, connectionId);
             return unit.RemainingTurns += 2;
         }
     }
@@ -131,7 +131,7 @@ namespace Backend.Utilities.Command
 
             var map = game.GetMap();
             var remainingTurnsBefore = unit.RemainingTurns;
-            var remainingTurnsAfter = command.Execute(unit, map, game);
+            var remainingTurnsAfter = command.Execute(unit, map, game, connectionId);
 
             if (remainingTurnsBefore > remainingTurnsAfter)
             {
@@ -153,7 +153,7 @@ namespace Backend.Utilities.Command
             ICommand command = history.Pop();
             var map = game.GetMap();
 
-            return command.Undo(unit, map, game);
+            return command.Undo(unit, map, game, connectionId);
         }
     }
 

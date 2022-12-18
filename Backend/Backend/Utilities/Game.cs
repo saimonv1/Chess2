@@ -6,6 +6,9 @@ using Backend.Utilities.AbstractFactory;
 using Backend.Utilities.Strategy;
 using Backend.Flyweight;
 using Backend.Utilities.State;
+using Backend.Memento;
+using Backend.GameHubs;
+using Microsoft.AspNetCore.SignalR;
 
 #endregion
 
@@ -18,6 +21,8 @@ public class Game
     private static Subject _mapSubject { get; } = new();
     private static MapFactory _mapFactory = new PlusMapFactory();
 
+    private static List<IMemento> _mapMementos = new();
+
     public static bool IsGameStarting =>
         _connectedPlayers.Count > 1 && _connectedPlayers.All(p => p.IsReady);
 
@@ -26,6 +31,7 @@ public class Game
 
     private Game()
     {
+        
     }
 
     public static Game GetGameInstance()
@@ -35,6 +41,7 @@ public class Game
 
     public string NextPlayer()
     {
+        BackupMap();
         var playersWithTurns = _connectedPlayers.Where(x => x.Units.Count > 0 && x.Units.Any(x => x.CurrentHealth > 0)).ToList();
         var playerTurn = playersWithTurns.Find(x => x.ConnectionID == CurrentPlayer);
         if (playerTurn is null)
@@ -116,9 +123,17 @@ public class Game
         _mapSubject.Map = _mapFactory.GenerateMap(_connectedPlayers);
     }
 
-    public void MoveItem(int oldX, int oldY, int newX, int newY)
+    public void MoveItem(int oldX, int oldY, int newX, int newY, string connectionId)
     {
         var newMap = _mapSubject.Map;
+
+        if (newMap.Tiles[newX, newY].IsRevert)
+        {
+            newMap.Tiles[newX, newY].IsRevert = false;
+            var player = _connectedPlayers.First(x => x.ConnectionID == connectionId);
+            GameHub.Instance.Clients.Client(player.ConnectionID).SendAsync("SetCanRevert", true);
+            //UndoMap();
+        }
 
         var pickup = newMap.Tiles[newX, newY] as TilePickup;
         var unit = newMap.Tiles[oldX, oldY] as TileUnit;
@@ -187,5 +202,22 @@ public class Game
         }
 
         return Color.Yellow;
+    }
+    public void BackupMap()
+    {
+        _mapMementos.Add(_mapSubject.Save());
+    }
+    public void UndoMap()
+    {
+        Console.WriteLine("Restoring map");
+        if (_mapMementos.Count < 1)
+        {
+            return;
+        }
+
+        var memento = _mapMementos[_mapMementos.Count - 2];
+        _mapMementos.Remove(memento);
+
+        _mapSubject.Restore(memento);
     }
 }
