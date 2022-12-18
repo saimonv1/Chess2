@@ -6,6 +6,7 @@ const GameContext = React.createContext({
     map: [],
     movesLeft: 0,
     pickupsLeft: 0,
+    lastWinner: '',
 
     name: '',
     color: -1,
@@ -18,6 +19,8 @@ const GameContext = React.createContext({
 
     addPlayer: (player) => {},
     removePlayer: (id) => {},
+    removePlayers: () => {},
+    resetPlayers: () => {},
 
     changeColor: (color) => {},
     changeName: (name) => {},
@@ -36,6 +39,8 @@ const GameContext = React.createContext({
     changeCurrentUnit: (unit) => {},
     changeInvalidCommand: (isInvalidCommand) => {},
     setCanRevert: (canRevert) => {},
+
+    changeLastWinner: (winner) => {},
 });
 
 export default GameContext;

@@ -19,6 +19,7 @@ const Lobby = (props) => {
   return (
     <React.Fragment>
       <h1>Lobby</h1>
+      {gameCtx.lastWinner && <div><b>Last winner:</b>{gameCtx.lastWinner}</div>}
       {gameCtx.players.map((player) => {
           let colorClass = classes.red;
           if (player.color === 0) {

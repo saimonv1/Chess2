@@ -117,6 +117,14 @@ public class GameHub : Hub
         Mover.Clear();
 
         _facade.ClearMove(Context.ConnectionId);
+
+        if (_facade.IsGameOver())
+        {
+            await Clients.Group(GameGroup).SendAsync("GameOver", _facade.GetWinnerName());
+            _facade.GetPlayers().ForEach(async x => await Groups.RemoveFromGroupAsync(x.ConnectionID, GameGroup));
+            _facade.ClearPlayers();
+            return;
+        }
         await Clients.Group(GameGroup).SendAsync("NextTurn", Context.ConnectionId, _facade.NextPlayer());
         await Clients.Group(GameGroup).SendAsync("MovesUpdate", 3);
     }
