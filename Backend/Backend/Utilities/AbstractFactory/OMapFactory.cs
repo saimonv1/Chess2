@@ -45,7 +45,7 @@ public class OMapFactory : MapFactory
         map.Tiles[18, 18] = new TilePickup(new Pickup(new Entities.Bridge.HealBig(), null));
         map.Tiles[1, 18] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackSmall()));
         map.Tiles[18, 1] = new TilePickup(new Pickup(null, new Entities.Bridge.AttackBig()));
-        map.Tiles[9, 9] = new Tile(false, true);
+        map.Tiles[9, 4] = new Tile(false, true);
         ///
 
         return map;

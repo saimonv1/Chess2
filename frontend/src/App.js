@@ -28,7 +28,8 @@ function App() {
   const setupConnection = async () => {
     try {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7001/game")
+        //.withUrl("https://localhost:7001/game")
+        .withUrl("https://chess2-back-h6nnw.ondigitalocean.app/game")
         .configureLogging(LogLevel.Information)
         .build();
 

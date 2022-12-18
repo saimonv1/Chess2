@@ -1,4 +1,5 @@
 ﻿using Backend.Memento;
+using Backend.Utilities;
 using Newtonsoft.Json.Linq;
 
 namespace Backend.Entities
@@ -46,6 +47,8 @@ namespace Backend.Entities
             Console.WriteLine(_map);
             Console.WriteLine("NEW MAP:");
             Console.WriteLine(state);
+            state.FixUnitPositions();
+            
             this.Map = state;
         }
     }
